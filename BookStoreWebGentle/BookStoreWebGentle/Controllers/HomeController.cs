@@ -10,7 +10,7 @@ namespace BookStoreWebGentle.Controllers
     {
         public string Index()
         {
-            return "Asp .Net Core MVC Demo";
+            return "Asp .Net Core MVC Demo ";
         }
     }
 }
