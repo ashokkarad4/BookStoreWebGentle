@@ -5,7 +5,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-
+ 
 namespace BookStoreWebGentle.Controllers
 {
     public class BookController : Controller
@@ -18,7 +18,7 @@ namespace BookStoreWebGentle.Controllers
        public ViewResult GetAllBooks()
         {
             var data= _bookRepository.GetAllBooks();
-            return View(data);
+            return View();
         }
         public BookModel GetBook(int id)
         {

@@ -17,6 +17,12 @@ namespace BookStoreWebGentle.Controllers
         {
             return View();
         }
+        public ViewResult ContactUs()
+        {
+            return View();
+        }
+    
+
 
 
     }
