@@ -3,19 +3,59 @@
     ViewData["Title"] = "Index";
 }
 
-<h1>Wel-Come to Book Store Application</h1>
 <body>
-    @{ 
-        int a = 11 ;
+    @*@{
+            int a = 4;
+        }
+        @if (a > 10)
+        {
+            a++;
+            <h1>Hello from if block...And Value is==@a </h1>
+        }
+        else
+        {
+            <h3>Hello From else block...</h3>
+        }
+
+        @switch (a)
+        {
+            case 1:<h1>I am from 1st switch</h1>
+                break;
+
+            case 2:<h1>I am from 2nd switch</h1>
+                break;
+            case 3:<h1>I am from 3rd switch</h1>
+                break;
+            case 4:<h1>I am from 4th switch</h1>
+                break;
+            case 5:<h1>I am from 5th switch</h1>
+                break;
+            default:<h1>I am from default...</h1>
+                break;
+        }*@
+    @for (int i = 0; i < 10; i++)
+    {
+        <h1>Wel-Come to Book Store Application</h1>
+
     }
-@if (a>10)
-{
-    a++;
-    <h1>Hello from if block...And Value is==@a </h1>
-}
-            else
-            {
-    <h3>Hello From else block...</h3>
-            }
+
+    @{
+        var list = new List<int>() { 1, 2, 3, 4, 5, 6, 7 };
+    }
+    @foreach (var item in list)
+    {
+        <h1>@item</h1>
+    }
+    <link href="~/CSS/StyleSheet.css" rel="stylesheet" />
+    <img src="~/images/Screenshot (1).png" class="logo" />
+    
 </body>
+
+<script src="~/lib/jquery/jquery.js"></script>
+
+<script>
+    $(document).ready(function () {
+        alert("Page Loaded....")
+    })
+</script>
 
