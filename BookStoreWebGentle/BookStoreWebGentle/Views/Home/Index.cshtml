@@ -1,61 +1,143 @@
 ﻿
 @{
-    ViewData["Title"] = "Index";
-}
+    ViewData["Title"] = "Home";
+ }
 
-<body>
-    @*@{
-            int a = 4;
-        }
-        @if (a > 10)
-        {
-            a++;
-            <h1>Hello from if block...And Value is==@a </h1>
-        }
-        else
-        {
-            <h3>Hello From else block...</h3>
-        }
+   <section class="container-fluid text-bg-success text-light p-5 text-center">
+       <div class="container">
+           <h1>Welcome to book Store</h1>
 
-        @switch (a)
-        {
-            case 1:<h1>I am from 1st switch</h1>
-                break;
+           <p>
+               A online bookstore is a shop that sells books, and where people can buy them. A used bookstore or second-hand bookshop sells and often buys used books.
 
-            case 2:<h1>I am from 2nd switch</h1>
-                break;
-            case 3:<h1>I am from 3rd switch</h1>
-                break;
-            case 4:<h1>I am from 4th switch</h1>
-                break;
-            case 5:<h1>I am from 5th switch</h1>
-                break;
-            default:<h1>I am from default...</h1>
-                break;
-        }*@
-    @for (int i = 0; i < 10; i++)
-    {
-        <h1>Wel-Come to Book Store Application</h1>
+               A book shop is a place where different kinds of textbooks or reference books are sold. It is a very important place for all especially for the students. Generally a book shop is situated near school, college or a stationary market place. There are kept many shelves on which the books are nicely arranged. The books are categorized according to the types. We can buy text book, story book, dictionary, pen, pencil, rubber etc. also from it. A bookseller is always available to serve the customers. A bookshop provides us with facilities to expand our knowledge.
+           </p>
+           <p>
+               <a href="#" class="btn btn-primary my-2">Search Books</a>
+           </p>
+       </div>
+   </section>
 
-    }
+   
+<div class="py-5 bg-light">
+    <div class="container">
+        <h3 class="h3">Related Books</h3>
+        <div class="row">
+            <div class="col-md-4">
+                <div class="card mb-4 shadow-sm">
+                    @*<svg class="bd-placeholder-img card-img-top" width="100%" height="225">     </svg>*@
+                    <div class="embed-responsive embed-responsive-16by9">
+                        <img alt="Card image cap" class="card-img-top embed-responsive-item" src="~/images/download-asp-net-book-pdf-free.PNG" />
+                    </div>
+                    <div class="card-body">
+                        <p class="card-text">This is Sectiin is used for short description of book</p>
+                        <div class="d-flex justify-content-between align-items-center">
+                            <div class="btn-group">
+                                <a href="#" class="btn btn-sm btn-outline-success">View Details</a>
+                            </div>
+                            <small class="text-muted">Author Name</small>
+                        </div>
+                    </div>
+                </div>
+            </div>
 
-    @{
-        var list = new List<int>() { 1, 2, 3, 4, 5, 6, 7 };
-    }
-    @foreach (var item in list)
-    {
-        <h1>@item</h1>
-    }
-    <link href="~/CSS/StyleSheet.css" rel="stylesheet" />
-    <img src="~/images/Screenshot (1).png" class="logo" />
-    
-</body>
+            <div class="col-md-4">
+                <div class="card mb-4 shadow-sm">
+                    @*<svg class="bd-placeholder-img card-img-top" width="100%" height="225">     </svg>*@
+                    <div class="embed-responsive embed-responsive-16by9">
+                        <img alt="Card image cap" class="card-img-top embed-responsive-item" src="~/images/download-asp-net-book-pdf-free.PNG" />
+                    </div>
+                    <div class="card-body">
+                        <p class="card-text">This is Sectiin is used for short description of book</p>
+                        <div class="d-flex justify-content-between align-items-center">
+                            <div class="btn-group">
+                                <a href="#" class="btn btn-sm btn-outline-success">View Details</a>
+                            </div>
+                            <small class="text-muted">Author Name</small>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="col-md-4">
+                <div class="card mb-4 shadow-sm">
+                    @*<svg class="bd-placeholder-img card-img-top" width="100%" height="225">     </svg>*@
+                    <div class="embed-responsive embed-responsive-16by9">
+                        <img alt="Card image cap" class="card-img-top embed-responsive-item" src="~/images/mqdefault.jpg" />
+                    </div>
+                    <div class="card-body">
+                        <p class="card-text">This is Sectiin is used for short description of book</p>
+                        <div class="d-flex justify-content-between align-items-center">
+                            <div class="btn-group">
+                                <a href="#" class="btn btn-sm btn-outline-success">View Details</a>
+                            </div>
+                            <small class="text-muted">Author Name</small>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="col-md-4">
+                <div class="card mb-4 shadow-sm">
+                    @*<svg class="bd-placeholder-img card-img-top" width="100%" height="225">     </svg>*@
+                    <div class="embed-responsive embed-responsive-16by9">
+                        <img alt="Card image cap" class="card-img-top embed-responsive-item" src="~/images/download-asp-net-book-pdf-free.PNG" />
+                    </div>
+                    <div class="card-body">
+                        <p class="card-text">This is Sectiin is used for short description of book</p>
+                        <div class="d-flex justify-content-between align-items-center">
+                            <div class="btn-group">
+                                <a href="#" class="btn btn-sm btn-outline-success">View Details</a>
+                            </div>
+                            <small class="text-muted">Author Name</small>
+                        </div>
+                    </div>
+                </div>
+            </div>
 
-<script src="~/lib/jquery/jquery.js"></script>
+            <div class="col-md-4">
+                <div class="card mb-4 shadow-sm">
+                    @*<svg class="bd-placeholder-img card-img-top" width="100%" height="225">     </svg>*@
+                    <div class="embed-responsive embed-responsive-16by9">
+                        <img alt="Card image cap" class="card-img-top embed-responsive-item" src="~/images/mqdefault.jpg" />
+                    </div>
+                    <div class="card-body">
+                        <p class="card-text">This is Sectiin is used for short description of book</p>
+                        <div class="d-flex justify-content-between align-items-center">
+                            <div class="btn-group">
+                                <a href="#" class="btn btn-sm btn-outline-success">View Details</a>
+                            </div>
+                            <small class="text-muted">Author Name</small>
+                        </div>
+                    </div>
+                </div>
+            </div>
 
-<script>
-    $(document).ready(function () {
-        alert("Page Loaded....")
-    })
-</script>
+            <div class="col-md-4">
+                <div class="card mb-4 shadow-sm">
+                    @*<svg class="bd-placeholder-img card-img-top" width="100%" height="225">     </svg>*@
+                    <div class="embed-responsive embed-responsive-16by9">
+                        <img alt="Card image cap" class="card-img-top embed-responsive-item" src="~/images/mqdefault.jpg" />
+                    </div>
+                    <div class="card-body">
+                        <p class="card-text">This is Sectiin is used for short description of book</p>
+                        <div class="d-flex justify-content-between align-items-center">
+                            <div class="btn-group">
+                                <a href="#" class="btn btn-sm btn-outline-success">View Details</a>
+                            </div>
+                            <small class="text-muted">Author Name</small>
+                        </div>
+                    </div>
+                </div>
+            </div>
 
+        </div>
+    </div>
+</div> 
+ @section scripts{ 
+     <script>
+         $(document).ready(function () {
+            // alert("document is Ready");
+         })
+     </script>
+ }
