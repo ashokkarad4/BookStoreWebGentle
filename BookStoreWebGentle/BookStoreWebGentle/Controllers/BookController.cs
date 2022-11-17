@@ -20,7 +20,8 @@ namespace BookStoreWebGentle.Controllers
             var data= _bookRepository.GetAllBooks();
             return View(data);
         }
-        public ViewResult GetBook(int id,string nameOfData)
+        [Route("book-details/{id}")]
+        public ViewResult GetBook(int id)
         {
             var data= _bookRepository.GetBookById(id);
             return View(data);
