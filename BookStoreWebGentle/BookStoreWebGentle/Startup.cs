@@ -1,6 +1,8 @@
- using Microsoft.AspNetCore.Builder;
+using BookStoreWebGentle.Data;
+using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using System;
@@ -16,6 +18,7 @@ namespace BookStoreWebGentle
         // For more information on how to configure your application, visit https://go.microsoft.com/fwlink/?LinkID=398940
         public void ConfigureServices(IServiceCollection services)
         {
+            services.AddDbContext<BookStoreContext>(options =>options.UseSqlServer("Server=LAP-ASHOKK\\SQLEXPRESS; Database = BookStore; User Id = sa; password = sumasoft123; Trusted_Connection = False; MultipleActiveResultSets = true; "));
             services.AddControllersWithViews();
         }
 

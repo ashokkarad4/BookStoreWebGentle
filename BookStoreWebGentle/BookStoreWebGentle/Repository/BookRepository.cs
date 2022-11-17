@@ -1,4 +1,5 @@
-﻿using BookStoreWebGentle.Models;
+﻿using BookStoreWebGentle.Data;
+using BookStoreWebGentle.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -8,6 +9,18 @@ namespace BookStoreWebGentle.Repository
 {
     public class BookRepository
     {
+        private readonly BookStoreContext _context = null;
+        public BookRepository(BookStoreContext context)
+        {
+            _context = context;
+        }
+        public int AddNewBook(BookModel model)
+        {
+            var newBook = new Books()
+            {
+                //BookRepository 
+            };
+        }
         
         public List<BookModel> GetAllBooks()
         {
