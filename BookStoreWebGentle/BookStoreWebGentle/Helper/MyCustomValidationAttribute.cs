@@ -10,7 +10,7 @@ namespace BookStoreWebGentle.Helper
     {
         public MyCustomValidationAttribute(string text)
         {
-            Text = text;
+            Text = text; 
         }
         public string Text { get; set; }
         protected override ValidationResult IsValid(object value, ValidationContext validationContext)

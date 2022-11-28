@@ -4,6 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using System.ComponentModel.DataAnnotations;
 using BookStoreWebGentle.Helper;
+using Microsoft.AspNetCore.Http;
 
 namespace BookStoreWebGentle.Models
 {
@@ -31,7 +32,25 @@ namespace BookStoreWebGentle.Models
         public int? TotalPages { get; set; }
         [Required(ErrorMessage = "Please Enter the Price of Book")]
         public double? Price { get; set; }
-       
+        [Display(Name ="Choose the coverPhoto of book")]
+        [Required]
+
+        public IFormFile CoverPhoto { get; set;  }
+        public string CoverImageUrl { get; set; }
+
+        [Display(Name = "Choose the Gallery images of book")]
+        [Required]
+
+        public IFormFileCollection GalleryFiles { get; set; }
+
+        public List<GalleryModel> Gallery { get; set; }
+
+        [Display(Name = "Choose your book in pdf format")]
+        [Required]
+
+        public IFormFile BookPdf { get; set; }
+        public string BookPdfUrl { get; set; }
+
 
     }
 }

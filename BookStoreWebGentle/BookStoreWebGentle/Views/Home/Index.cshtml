@@ -6,10 +6,8 @@
    <section class="container-fluid text-bg-success text-light p-5 text-center">
        <div class="container">
            <h1>Welcome to book Store</h1>
-
            <p>
                A online bookstore is a shop that sells books, and where people can buy them. A used bookstore or second-hand bookshop sells and often buys used books.
-
                A book shop is a place where different kinds of textbooks or reference books are sold. It is a very important place for all especially for the students. Generally a book shop is situated near school, college or a stationary market place. There are kept many shelves on which the books are nicely arranged. The books are categorized according to the types. We can buy text book, story book, dictionary, pen, pencil, rubber etc. also from it. A bookseller is always available to serve the customers. A bookshop provides us with facilities to expand our knowledge.
            </p>
            <p>
@@ -18,119 +16,34 @@
        </div>
    </section>
 
-   
 <div class="py-5 bg-light">
     <div class="container">
-        <h3 class="h3">Related Books</h3>
+        <h3 class="h3">Top Books</h3>
+
         <div class="row">
             <div class="col-md-4">
-                <div class="card mb-4 shadow-sm">
-                    @*<svg class="bd-placeholder-img card-img-top" width="100%" height="225">     </svg>*@
-                    <div class="embed-responsive embed-responsive-16by9">
-                        <img alt="Card image cap" class="card-img-top embed-responsive-item" src="~/images/download-asp-net-book-pdf-free.PNG" />
-                    </div>
-                    <div class="card-body">
-                        <p class="card-text">This is Sectiin is used for short description of book</p>
-                        <div class="d-flex justify-content-between align-items-center">
-                            <div class="btn-group">
-                                <a href="#" class="btn btn-sm btn-outline-success">View Details</a>
-                            </div>
-                            <small class="text-muted">Author Name</small>
-                        </div>
-                    </div>
-                </div>
+                @*<partial name="_bookthumbnail" model="new BookModel()"/>*@
+                @Html.Partial("_bookthumbnail", new BookModel())
             </div>
 
             <div class="col-md-4">
-                <div class="card mb-4 shadow-sm">
-                    @*<svg class="bd-placeholder-img card-img-top" width="100%" height="225">     </svg>*@
-                    <div class="embed-responsive embed-responsive-16by9">
-                        <img alt="Card image cap" class="card-img-top embed-responsive-item" src="~/images/download-asp-net-book-pdf-free.PNG" />
-                    </div>
-                    <div class="card-body">
-                        <p class="card-text">This is Sectiin is used for short description of book</p>
-                        <div class="d-flex justify-content-between align-items-center">
-                            <div class="btn-group">
-                                <a href="#" class="btn btn-sm btn-outline-success">View Details</a>
-                            </div>
-                            <small class="text-muted">Author Name</small>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            
-            <div class="col-md-4">
-                <div class="card mb-4 shadow-sm">
-                    @*<svg class="bd-placeholder-img card-img-top" width="100%" height="225">     </svg>*@
-                    <div class="embed-responsive embed-responsive-16by9">
-                        <img alt="Card image cap" class="card-img-top embed-responsive-item" src="~/images/mqdefault.jpg" />
-                    </div>
-                    <div class="card-body">
-                        <p class="card-text">This is Sectiin is used for short description of book</p>
-                        <div class="d-flex justify-content-between align-items-center">
-                            <div class="btn-group">
-                                <a href="#" class="btn btn-sm btn-outline-success">View Details</a>
-                            </div>
-                            <small class="text-muted">Author Name</small>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            
-            <div class="col-md-4">
-                <div class="card mb-4 shadow-sm">
-                    @*<svg class="bd-placeholder-img card-img-top" width="100%" height="225">     </svg>*@
-                    <div class="embed-responsive embed-responsive-16by9">
-                        <img alt="Card image cap" class="card-img-top embed-responsive-item" src="~/images/download-asp-net-book-pdf-free.PNG" />
-                    </div>
-                    <div class="card-body">
-                        <p class="card-text">This is Sectiin is used for short description of book</p>
-                        <div class="d-flex justify-content-between align-items-center">
-                            <div class="btn-group">
-                                <a href="#" class="btn btn-sm btn-outline-success">View Details</a>
-                            </div>
-                            <small class="text-muted">Author Name</small>
-                        </div>
-                    </div>
-                </div>
+                @*<partial name="_bookthumbnail" model="new BookModel()" />*@
+                @await Html.PartialAsync("_bookthumbnail", new BookModel())
             </div>
 
             <div class="col-md-4">
-                <div class="card mb-4 shadow-sm">
-                    @*<svg class="bd-placeholder-img card-img-top" width="100%" height="225">     </svg>*@
-                    <div class="embed-responsive embed-responsive-16by9">
-                        <img alt="Card image cap" class="card-img-top embed-responsive-item" src="~/images/mqdefault.jpg" />
-                    </div>
-                    <div class="card-body">
-                        <p class="card-text">This is Sectiin is used for short description of book</p>
-                        <div class="d-flex justify-content-between align-items-center">
-                            <div class="btn-group">
-                                <a href="#" class="btn btn-sm btn-outline-success">View Details</a>
-                            </div>
-                            <small class="text-muted">Author Name</small>
-                        </div>
-                    </div>
-                </div>
+                @*<partial name="_bookthumbnail" model="new BookModel()" />*@
+                @{ 
+                    Html.RenderPartial("_bookthumbnail", new BookModel());
+                }
             </div>
 
             <div class="col-md-4">
-                <div class="card mb-4 shadow-sm">
-                    @*<svg class="bd-placeholder-img card-img-top" width="100%" height="225">     </svg>*@
-                    <div class="embed-responsive embed-responsive-16by9">
-                        <img alt="Card image cap" class="card-img-top embed-responsive-item" src="~/images/mqdefault.jpg" />
-                    </div>
-                    <div class="card-body">
-                        <p class="card-text">This is Sectiin is used for short description of book</p>
-                        <div class="d-flex justify-content-between align-items-center">
-                            <div class="btn-group">
-                                <a href="#" class="btn btn-sm btn-outline-success">View Details</a>
-                            </div>
-                            <small class="text-muted">Author Name</small>
-                        </div>
-                    </div>
-                </div>
+                @*<partial name="_bookthumbnail" model="new BookModel()" />*@
+                @{
+                   await Html.RenderPartialAsync("_bookthumbnail", new BookModel());
+                }
             </div>
-
         </div>
     </div>
 </div> 

@@ -6,16 +6,23 @@
 <div class="container">
     <h4 class="display-4 bg-light">Add New Book</h4>
     <hr />
-    @if (ViewBag.IsSuccess==true)
+    @if (ViewBag.IsSuccess == true)
     {
-<div class="alert alert-success alert-dismissible fade show" role="alert">
-    <strong>Congratulations!</strong> New Book Added Successfully...<br />
-    Click <a asp-controller="Book" asp-action="GetBook" asp-route-id="@ViewBag.BookId">here</a> to view details.
-    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-</div>
+        <div class="alert alert-success alert-dismissible fade show" role="alert">
+            <strong>Congratulations!</strong> New Book Added Successfully...<br />
+            Click <a asp-controller="Book" asp-action="GetBook" asp-route-id="@ViewBag.BookId">here</a> to view details.
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
     }
 
-    <form method="post" asp-controller="Book" asp-action="AddNewBook">
+    <div class="d-flex justify-content-center"  style="display:none">
+        <div class="spinner-border" role="status" id="myLoader" style="display:none;">
+            <span class="sr-only">Loading...</span>
+        </div>
+    </div>
+
+    <form method="post" enctype="multipart/form-data" data-ajax-complete="myComplete" data-ajax-success="mySuccess" data-ajax-failure-="myFailure"
+          data-ajax-loading="#myLoader" asp-controller="Book" asp-action="AddNewBook">
         <div asp-validation-summary="ModelOnly" class="text-danger"></div>
         <div class="form-group">
             <label asp-for="Title"></label>
@@ -43,9 +50,9 @@
         <br />
         <div class="form-group">
             <label asp-for="Language"></label>
-            <select asp-for="Language" class="form-control" asp-items=" ViewBag.Language" >
+            <select asp-for="Language" class="form-control" asp-items=" ViewBag.Language">
                 <option value="">Please choose your language</option>
-              </select>
+            </select>
 
             <span asp-validation-for="Language" class="text-danger"></span>
         </div>
@@ -62,8 +69,56 @@
             <span asp-validation-for="Price" class="text-danger"></span>
         </div>
         <br />
+
+
+        <div class="form-group">
+            <label asp-for="CoverPhoto" class="control-label"></label>
+            <div class="custom-file">
+                <input asp-for="CoverPhoto" class="custom-file-input" id="customFile">
+                <label class="custom-file-label" for="customFile">Upload File</label>
+            </div>
+            <span asp-validation-for="CoverPhoto" class="text-danger"></span>
+        </div>
+        <br />
+        <div class="form-group">
+            <label asp-for="GalleryFiles" class="control-label"></label>
+            <div class="custom-file">
+                <input asp-for="GalleryFiles" class="custom-file-input" id="customFile">
+                <label class="custom-file-label" for="customFile">Upload File</label>
+            </div>
+            <span asp-validation-for="GalleryFiles" class="text-danger"></span>
+        </div>
+        <br />
+
+        <div class="form-group">
+            <label asp-for="BookPdf" class="control-label"></label>
+            <div class="custom-file">
+                <input asp-for="BookPdf" class="custom-file-input" id="customFile">
+                <label class="custom-file-label" for="customFile">Choose file</label>
+            </div>
+            <span asp-validation-for="BookPdf" class="text-danger"></span>
+        </div>
+        <br />
         <div class="form-group">
             <input type="submit" value="Add Book" class="btn btn-success" />
         </div>
     </form>
 </div>
+@section scripts {
+<script>
+    function myComplete()
+    {
+        alert("I am from Complete Function");
+    }
+    function mySuccess()
+    {
+        alert("I am from Successs Function");
+    }
+    function myFailure()
+    {
+        alert("I am from Failure Function");
+    }
+
+
+</script>
+}

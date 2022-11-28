@@ -15,7 +15,11 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Folder Include="wwwroot\books\cover\" />
+    <Folder Include="wwwroot\books\Gallery\" />
+    <Folder Include="wwwroot\books\pdf\" />
     <Folder Include="wwwroot\JS\" />
+    <Folder Include="wwwroot\jquery-ajax-unobtrusive\" />
   </ItemGroup>
 
 </Project>
