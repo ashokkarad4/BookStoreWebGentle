@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace BookStoreWebGentle.Repository
 {
-    public class BookRepository
+    public class BookRepository : IBookRepository
     {
         private readonly BookStoreContext _context = null;
         public BookRepository(BookStoreContext context)
@@ -23,13 +23,13 @@ namespace BookStoreWebGentle.Repository
                 Title = model.Title,
                 Author = model.Author,
                 Description = model.Description,
-                TotalPages = model.TotalPages.HasValue ? model.TotalPages.Value:0,
+                TotalPages = model.TotalPages.HasValue ? model.TotalPages.Value : 0,
                 CreatedOn = DateTime.UtcNow,
                 UpdatedOn = DateTime.UtcNow,
                 Price = (double)model.Price,
                 Language = model.Language,
-                CoverImageUrl=model.CoverImageUrl,
-                BookPdfUrl=model.BookPdfUrl
+                CoverImageUrl = model.CoverImageUrl,
+                BookPdfUrl = model.BookPdfUrl
 
             };
             newBook.bookGallery = new List<BookGallery>();
@@ -37,7 +37,7 @@ namespace BookStoreWebGentle.Repository
             foreach (var file in model.Gallery)
             {
                 newBook.bookGallery.Add(new BookGallery()
-                {   
+                {
                     Name = file.Name,
                     URL = file.URL
                 });
@@ -49,7 +49,7 @@ namespace BookStoreWebGentle.Repository
             return newBook.Id;
         }
 
-      
+
 
         public async Task<List<BookModel>> GetAllBooks()
         {
@@ -73,7 +73,7 @@ namespace BookStoreWebGentle.Repository
 
         }
 
-        public async Task<List<BookModel>> GetTopBooksAsync()
+        public async Task<List<BookModel>> GetTopBooksAsync(int count)
         {
             return await _context.Books
                   .Select(book => new BookModel()
@@ -87,7 +87,7 @@ namespace BookStoreWebGentle.Repository
                       Price = (int?)book.Price,
                       TotalPages = book.TotalPages,
                       CoverImageUrl = book.CoverImageUrl
-                  }).Take(3).ToListAsync();
+                  }).Take(count).ToListAsync();
         }
         public async Task<BookModel> GetBookById(int id)
         {
@@ -102,7 +102,7 @@ namespace BookStoreWebGentle.Repository
                      Title = book.Title,
                      Price = (int?)book.Price,
                      TotalPages = book.TotalPages,
-                     CoverImageUrl = book.CoverImageUrl, 
+                     CoverImageUrl = book.CoverImageUrl,
                      Gallery = book.bookGallery.Select(g => new GalleryModel()
                      {
                          Id = g.Id,
@@ -114,11 +114,15 @@ namespace BookStoreWebGentle.Repository
         }
 
 
-        public List<BookModel> SearchBook(string title,string authorName)
+        public List<BookModel> SearchBook(string title, string authorName)
         {
             return null;
         }
-
         
+        public string GetAppName()
+        {
+            return "BookSto0re Application";
+        }
+
     }
 }

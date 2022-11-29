@@ -13,5 +13,6 @@ namespace BookStoreWebGentle.Repository
         List<BookModel> SearchBook(string title, string authorName);
 
         string GetAppName();
+
     }
 }

@@ -14,9 +14,9 @@ namespace BookStoreWebGentle.Controllers
 {
     public class BookController : Controller
     {
-        private readonly BookRepository _bookRepository = null;
+        private readonly IBookRepository _bookRepository = null;
         private readonly IWebHostEnvironment _webHostEnvironment = null;
-        public BookController(BookRepository bookRepository, IWebHostEnvironment webHostEnvironment)
+        public BookController(IBookRepository bookRepository, IWebHostEnvironment webHostEnvironment)
         {
             _bookRepository = bookRepository;
             _webHostEnvironment = webHostEnvironment;

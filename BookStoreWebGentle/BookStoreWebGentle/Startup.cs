@@ -31,7 +31,7 @@ namespace BookStoreWebGentle
             //
           //  });
 #endif
-            services.AddScoped<BookRepository, BookRepository>();
+            services.AddScoped<IBookRepository, BookRepository>();
             
 
         }

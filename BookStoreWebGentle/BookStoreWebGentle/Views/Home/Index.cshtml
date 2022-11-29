@@ -2,7 +2,7 @@
 @{
     ViewData["Title"] = "Home";
  }
-
+@inject BookStoreWebGentle.Repository.IBookRepository _bookRepository
    <section class="container-fluid text-bg-success text-light p-5 text-center">
        <div class="container">
            <h1>Welcome to book Store</h1>
@@ -19,7 +19,7 @@
    <div class="py-5 bg-light">
        <div class="container">
            <h3 class="h3">Top books</h3>
-           @await Component.InvokeAsync("TopBooks")
+           @await Component.InvokeAsync("TopBooks", new { count = 6 })
 
            @*<vc:top-books count="6" ></vc:top-books>*@
 
