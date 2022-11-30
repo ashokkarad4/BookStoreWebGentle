@@ -1,9 +1,12 @@
-﻿<header>
+﻿@inject BookStoreWebGentle.Repository.IBookRepository _bookRepo
+
+<header>
     <nav class="navbar navbar-expand-lg navbar-light bg-info">
         <div class="container">
             <a class="navbar-brand" href="/">
                 <img src="~/images/bookstore-2579193-2148813.webp" width="30" height="30" />
-                Book Store
+               @_bookRepo.GetAppName()
+            
             </a>
             <button class="navbar-toggler" type="button" data-toggle="collapse" data-target=".navbar-collapse" aria-expanded="false" aria-label="Toggle navigation">
                 <span class="navbar-toggler-icon"></span>

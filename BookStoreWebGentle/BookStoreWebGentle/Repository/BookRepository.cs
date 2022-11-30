@@ -121,7 +121,7 @@ namespace BookStoreWebGentle.Repository
         
         public string GetAppName()
         {
-            return "BookSto0re Application";
+            return "Book Store Application";
         }
 
     }
