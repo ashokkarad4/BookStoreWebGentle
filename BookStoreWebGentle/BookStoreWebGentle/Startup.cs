@@ -1,8 +1,11 @@
 using BookStoreWebGentle.Data;
+using BookStoreWebGentle.Helper;
+using BookStoreWebGentle.Models;
 using BookStoreWebGentle.Repository;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -29,6 +32,22 @@ namespace BookStoreWebGentle
             services.AddDbContext<BookStoreContext>(
                 options => options.UseSqlServer(_configuration.GetConnectionString("DefaultConnection")));
 
+            services.AddIdentity<ApplicationUser, IdentityRole>()
+                .AddEntityFrameworkStores<BookStoreContext>();
+
+            services.Configure<IdentityOptions>(options =>
+            {
+                options.Password.RequiredLength = 5;
+                options.Password.RequiredUniqueChars = 1;
+                options.Password.RequireDigit = false;
+                options.Password.RequireLowercase = false;
+                options.Password.RequireNonAlphanumeric = false;
+                options.Password.RequireUppercase = false;
+            });
+            services.ConfigureApplicationCookie(config =>
+            {
+                config.LoginPath = _configuration["Application:LogiPath"];
+                });
             services.AddControllersWithViews();
 #if DEBUG
             services.AddRazorPages();
@@ -40,7 +59,8 @@ namespace BookStoreWebGentle
           //  });
 #endif
             services.AddScoped<IBookRepository, BookRepository>();
-            
+            services.AddScoped<IAccountRepository, AccountRepository>();
+            services.AddScoped<IUserClaimsPrincipalFactory<ApplicationUser>, ApplicationUserClaimsPrincipalFactory>();
 
         }
 

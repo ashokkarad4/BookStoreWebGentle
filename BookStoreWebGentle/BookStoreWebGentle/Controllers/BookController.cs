@@ -1,5 +1,6 @@
 ﻿using BookStoreWebGentle.Models;
 using BookStoreWebGentle.Repository;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -31,6 +32,7 @@ namespace BookStoreWebGentle.Controllers
         }
 
         [Route("book-details/{id:int:min(1)}", Name = "bookDetailsRoute")]
+        [Authorize]
         public async Task<ViewResult> GetBook(int id)
         {
             var data = await _bookRepository.GetBookById(id);
@@ -41,6 +43,7 @@ namespace BookStoreWebGentle.Controllers
         {
             return _bookRepository.SearchBook(bookName, AuthorName);
         }
+        [Authorize]
         public ViewResult AddNewBook(bool isSuccess=false, int bookId=0)
         {
             var model = new BookModel()
