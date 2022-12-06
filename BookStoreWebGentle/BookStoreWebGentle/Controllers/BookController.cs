@@ -39,11 +39,11 @@ namespace BookStoreWebGentle.Controllers
 
             return View(data);
         }
-        public List<BookModel> SearchBook(string bookName,string AuthorName)
+        public List<BookModel> SearchBooks(string bookName, string authorName)
         {
-            return _bookRepository.SearchBook(bookName, AuthorName);
+            return _bookRepository.SearchBook(bookName, authorName);
         }
-        [Authorize]
+        [Authorize(Roles ="Ashok,Admin")]
         public ViewResult AddNewBook(bool isSuccess=false, int bookId=0)
         {
             var model = new BookModel()

@@ -1,4 +1,7 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using BookStoreWebGentle.Models;
+using BookStoreWebGentle.Services;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using System;
 using System.Collections.Generic;
@@ -9,15 +12,37 @@ namespace BookStoreWebGentle.Controllers
 {
     public class HomeController:Controller
     {
-        public ViewResult Index()
-        {
-            return View();
-        }
+        private readonly IUserService _userService;
+        private readonly IEmailService _emailService;
 
+        public HomeController(IUserService userService, IEmailService emailService)
+        {
+            _userService = userService;
+            _emailService = emailService;
+        }
+        public async Task<ViewResult> Index()   
+         {
+            //UserEmailOptions options = new UserEmailOptions
+            //{
+            //    ToEmails = new List<string>() { "ashokkarad4@gmail.com" },
+            //    PlaceHolders = new List<KeyValuePair<string, string>>()
+            //    {
+            //        new KeyValuePair<string, string>("{{UserName}}", "Ashok")
+            //    }
+            //};
+
+            //await _emailService.SendTestEmail(options);
+
+            //var userId = _userService.GetUserId();
+            //var isLoggedIn = _userService.IsAuthenticated();
+            return  View();
+        }
+    
         public ViewResult AboutUs()
         {
-            return View();
+            return  View();
         }
+        [Authorize(Roles = "Admin,Ashok")]
         public ViewResult ContactUs()
         {
             return View();

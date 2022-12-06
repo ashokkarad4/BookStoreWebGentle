@@ -2,6 +2,7 @@ using BookStoreWebGentle.Data;
 using BookStoreWebGentle.Helper;
 using BookStoreWebGentle.Models;
 using BookStoreWebGentle.Repository;
+using BookStoreWebGentle.Services;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
@@ -33,7 +34,7 @@ namespace BookStoreWebGentle
                 options => options.UseSqlServer(_configuration.GetConnectionString("DefaultConnection")));
 
             services.AddIdentity<ApplicationUser, IdentityRole>()
-                .AddEntityFrameworkStores<BookStoreContext>();
+                .AddEntityFrameworkStores<BookStoreContext>().AddDefaultTokenProviders()    ;
 
             services.Configure<IdentityOptions>(options =>
             {
@@ -43,7 +44,19 @@ namespace BookStoreWebGentle
                 options.Password.RequireLowercase = false;
                 options.Password.RequireNonAlphanumeric = false;
                 options.Password.RequireUppercase = false;
+
+                options.SignIn.RequireConfirmedEmail = false;
+
+                options.Lockout.DefaultLockoutTimeSpan = TimeSpan.FromMinutes(5);
+                options.Lockout.MaxFailedAccessAttempts = 3;
             });
+
+
+            services.Configure<DataProtectionTokenProviderOptions>(options =>
+            {
+                options.TokenLifespan = TimeSpan.FromMinutes(20);
+            });
+
             services.ConfigureApplicationCookie(config =>
             {
                 config.LoginPath = _configuration["Application:LogiPath"];
@@ -60,6 +73,10 @@ namespace BookStoreWebGentle
 #endif
             services.AddScoped<IBookRepository, BookRepository>();
             services.AddScoped<IAccountRepository, AccountRepository>();
+            services.AddScoped<IUserService, UserService>();
+            services.AddScoped<IEmailService,   EmailService>();
+
+            services.Configure<SMTPConfigModel>(_configuration.GetSection("SMTPConfig"));
             services.AddScoped<IUserClaimsPrincipalFactory<ApplicationUser>, ApplicationUserClaimsPrincipalFactory>();
 
         }

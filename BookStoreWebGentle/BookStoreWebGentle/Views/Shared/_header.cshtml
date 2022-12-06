@@ -1,11 +1,12 @@
 ﻿@inject BookStoreWebGentle.Repository.IBookRepository _bookRepo
 
 <header>
-    <nav class="navbar navbar-expand-lg navbar-light bg-info">
+    <nav class="navbar navbar-expand-lg navbar-light box-shadow: 1px 0px 9px #e3e3e3;">
         <div class="container">
             <a class="navbar-brand" href="/">
                 <img src="~/images/bookstore-2579193-2148813.webp" width="30" height="30" />
-Book Store Application            </a>
+              Book Store Application           
+            </a>
             <button class="navbar-toggler" type="button" data-toggle="collapse" data-target=".navbar-collapse" aria-expanded="false" aria-label="Toggle navigation">
                 <span class="navbar-toggler-icon"></span>
             </button>
@@ -24,13 +25,25 @@ Book Store Application            </a>
                         <a class="nav-link text-dark" asp-controller="Home" asp-action="contactus">ContactUs</a>
                     </li>
                     </li>
-                    <li class="nav-item">
-                        <a class="nav-link text-dark" asp-controller="book" asp-action="getallbooks">All Books</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link text-dark" asp-controller="book" asp-action="AddNewBook">Add New Book</a>
-                    </li>
+                    @*<li class="nav-item">
+            <a class="nav-link text-dark" asp-controller="book" asp-action="getallbooks">All Books</a>
+        </li>*@
+                    @*<li class="nav-item">
+            <a class="nav-link text-dark" asp-controller="book" asp-action="AddNewBook">Add New Book</a>
+        </li>*@
 
+                    @if (User.Identity.IsAuthenticated)
+                    {
+                        <li class="nav-item">
+                            <a class="nav-link text-dark" asp-controller="book" asp-action="getallbooks">All Books</a>
+                        </li>
+                        <li>
+                            <a class="nav-link text-dark" asp-controller="book" asp-action="AddNewBook">Add New Book</a>
+                        </li>
+                    }
+                    <li>
+                        <a class="nav-link text-dark" asp-area="Admin" asp-controller="Home" asp-action="Index">Admin</a>
+                    </li>
                 </ul>
             </div>
         </div>

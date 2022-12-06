@@ -8,14 +8,14 @@
         </a>
         <div class="dropdown-menu" aria-labelledby="navbarDropdown">
             <a class="dropdown-item" asp-action="Logout" asp-controller="Account">Logout</a>
-            @*<a class="dropdown-item" asp-action="ChangePassword" asp-controller="Account">Change password</a>*@
+            <a class="dropdown-item" asp-action="ChangePassword" asp-controller="Account">Change password</a>
         </div>
     </li>
 }
 else
 {
     <li class="nav-item">
-        <a class="btn btn-success" asp-controller="Account" asp-action="Login" asp-route-returnUrl="@Context.Request.Path" asp">Login</a>
-        <a class="btn btn-primary" asp-controller="Account" asp-action="Signup">Register</a>
+        <a class="btn btn-outline-success" asp-controller="Account" asp-action="Login" asp-route-returnUrl="@Context.Request.Path" asp">Login</a>
+        <a class="btn btn-outline-primary" asp-controller="Account" asp-action="Signup">Register</a>
     </li>
 }
