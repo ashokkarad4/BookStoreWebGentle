@@ -17,10 +17,13 @@ namespace BookStoreWebGentle.Controllers
     {
         private readonly IBookRepository _bookRepository = null;
         private readonly IWebHostEnvironment _webHostEnvironment = null;
-        public BookController(IBookRepository bookRepository, IWebHostEnvironment webHostEnvironment)
+        private IHostingEnvironment _environment;
+
+        public BookController(IBookRepository bookRepository, IWebHostEnvironment webHostEnvironment, IHostingEnvironment environment)
         {
             _bookRepository = bookRepository;
             _webHostEnvironment = webHostEnvironment;
+            _environment = environment;
         }
 
         [Route("all-books")]
@@ -43,7 +46,7 @@ namespace BookStoreWebGentle.Controllers
         {
             return _bookRepository.SearchBook(bookName, authorName);
         }
-        [Authorize(Roles ="Ashok,Admin")]
+        //[Authorize(Roles ="Ashok,Admin")]
         public ViewResult AddNewBook(bool isSuccess=false, int bookId=0)
         {
             var model = new BookModel()

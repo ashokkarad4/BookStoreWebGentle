@@ -8,8 +8,11 @@
         <p class="card-text">@(string.IsNullOrEmpty(Model.Description) ? "Description is not availabe": Model.Description)</p>
         <div class="d-flex justify-content-between align-items-center">
             <div class="btn-group">
-                <a asp-route="bookDetailsRoute" asp-route-id="@Model.Id"
-                   class="btn btn-sm btn-outline-secondary">View details</a>
+                @if (User.Identity.IsAuthenticated)
+                {
+                    <a asp-route="bookDetailsRoute" asp-route-id="@Model.Id"
+                       class="btn btn-sm btn-outline-secondary">View details</a>
+                }
             </div>
             <small class="text-muted">@(string.IsNullOrEmpty(Model.Author) ? "NA" : Model.Author)</small>
         </div>

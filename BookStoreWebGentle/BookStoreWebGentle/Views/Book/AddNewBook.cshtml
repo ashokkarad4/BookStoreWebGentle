@@ -22,58 +22,65 @@
             <span class="sr-only">Loading...</span>
         </div>
     </div>
-
+    
     <form method="post" enctype="multipart/form-data" data-ajax-complete="myComplete" data-ajax-success="mySuccess" data-ajax-failure-="myFailure"
           data-ajax-loading="#myLoader" asp-controller="Book" asp-action="AddNewBook">
-        <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-        <div class="form-group">
-            <label asp-for="Title"></label>
-            <input asp-for="Title" class="form-control" />
-            <span asp-validation-for="Title" class="text-danger"></span>
-        </div>
-        <br />
-        <div class="form-group">
-            <label asp-for="Author"></label>
-            <input asp-for="Author" class="form-control" />
-            <span asp-validation-for="Author" class="text-danger"></span>
-        </div>
-        <br />
-        <div class="form-group">
-            <label asp-for="Description"></label>
-            <textarea asp-for="Description" class="form-control"></textarea>
-            <span asp-validation-for="Description" class="text-danger"></span>
-        </div>
-        <br />
-        <div class="form-group">
-            <label asp-for="TotalPages"></label>
-            <input asp-for="TotalPages " class="form-control" />
-            <span asp-validation-for="TotalPages" class="text-danger"></span>
-        </div>
-        <br />
-        <div class="form-group">
-            <label asp-for="Language"></label>
-            <select asp-for="Language" class="form-control" asp-items=" ViewBag.Language">
-                <option value="">Please choose your language</option>
-            </select>
+        <div asp-validation-summary="ModelOnly"  class="text-danger"></div>
+        <div class="row">
+            <div class="col-md-6">
+                <div class="col-md-12">
+                    <label asp-for="Title"></label>
+                    <input asp-for="Title" class="form-control" />
+                    <span asp-validation-for="Title" class="text-danger"></span>
+                </div>
+                <br />
+                <div class="col-md-12">
+                    <label asp-for="Author"></label>
+                    <input asp-for="Author" class="form-control" />
+                    <span asp-validation-for="Author" class="text-danger"></span>
+                </div>
+                <br />
+                <div class="col-md-12">
+                    <label asp-for="Description"></label>
+                    <textarea asp-for="Description" class="form-control"></textarea>
+                    <span asp-validation-for="Description" class="text-danger"></span>
+                </div>
+                <br />
+                <div class="col-md-12">
+                    <label asp-for="TotalPages"></label>
+                    <input asp-for="TotalPages " class="form-control" />
+                    <span asp-validation-for="TotalPages" class="text-danger"></span>
+                </div>
+                <br />
+                <div class="col-md-12">
+                    <label asp-for="Language"></label>
+                    <select asp-for="Language" class="form-control" asp-items=" ViewBag.Language">
+                        <option value="">Please choose your language</option>
+                    </select>
 
-            <span asp-validation-for="Language" class="text-danger"></span>
-        </div>
-        <br />
-        <div class="form-group">
-            <label asp-for="Category"></label>
-            <input asp-for="Category" class="form-control" />
-            <span asp-validation-for="Category" class="text-danger"></span>
-        </div>
-        <br />
-        <div class="form-group">
-            <label asp-for="Price"></label>
-            <input asp-for="Price" class="form-control" />
-            <span asp-validation-for="Price" class="text-danger"></span>
-        </div>
-        <br />
+                    <span asp-validation-for="Language" class="text-danger"></span>
+                </div>
+                <br />
+                <div class="col-md-12">
+                    <label asp-for="Category"></label>
+                    <input asp-for="Category" class="form-control" />
+                    <span asp-validation-for="Category" class="text-danger"></span>
+                </div>
+                <br />
+                <div class="col-md-12">
+                    <label asp-for="Price"></label>
+                    <input asp-for="Price" class="form-control" />
+                    <span asp-validation-for="Price" class="text-danger"></span>
+                </div>
+                <br />
 
-
-        <div class="form-group">
+                <div class="form-group">
+                    <div class="col-md-10">
+                        <p>Upload one or more files</p>
+                        <input type="file" name="files" multiple />
+                    </div>
+                </div>
+                @*<div class="form-group">
             <label asp-for="CoverPhoto" class="control-label"></label>
             <div class="custom-file">
                 <input asp-for="CoverPhoto" class="custom-file-input" id="customFile">
@@ -99,28 +106,20 @@
                 <label class="custom-file-label" for="customFile">Choose file</label>
             </div>
             <span asp-validation-for="BookPdf" class="text-danger"></span>
+        </div>*@
+                <br />
+                <div class="form-group">
+                    <input type="submit" value="Add Book" class="btn btn-success" />
+                </div>
+            </div>
+            <div class="col-md-6">
+                <img src="~/images/AddBook.png" class="img-fluid" />
+            </div>
+
         </div>
-        <br />
-        <div class="form-group">
-            <input type="submit" value="Add Book" class="btn btn-success" />
-        </div>
+        
+            
     </form>
 </div>
-@section scripts {
-<script>
-    function myComplete()
-    {
-        alert("I am from Complete Function");
-    }
-    function mySuccess()
-    {
-        alert("I am from Successs Function");
-    }
-    function myFailure()
-    {
-        alert("I am from Failure Function");
-    }
 
-
-</script>
 }
