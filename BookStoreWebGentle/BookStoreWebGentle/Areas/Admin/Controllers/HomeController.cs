@@ -13,7 +13,7 @@ namespace BookStoreWebGentle.Areas.Admin.Controllers
     public class HomeController : Controller
     {
         [Route("")]
-        [Authorize(Roles ="Admin,Ashok")]
+       
         // GET: HomeController1
         public ActionResult Index()
         {
@@ -88,5 +88,6 @@ namespace BookStoreWebGentle.Areas.Admin.Controllers
                 return View();
             }
         }
+
     }
 }

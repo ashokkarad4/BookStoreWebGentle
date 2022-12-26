@@ -46,7 +46,7 @@ namespace BookStoreWebGentle.Controllers
         {
             return _bookRepository.SearchBook(bookName, authorName);
         }
-        //[Authorize(Roles ="Ashok,Admin")]
+        [Authorize(Roles ="Manager,Admin")]
         public ViewResult AddNewBook(bool isSuccess=false, int bookId=0)
         {
             var model = new BookModel()
@@ -65,6 +65,8 @@ namespace BookStoreWebGentle.Controllers
             return View(model);
         }
         [HttpPost]
+        [Authorize(Roles = "Manager,Admin")]
+
         public async Task<IActionResult> AddNewBook(BookModel bookModel)
         {
 
@@ -130,6 +132,11 @@ namespace BookStoreWebGentle.Controllers
                 new LanguageModel(){Id=1,Text="Hindi"},
                 new LanguageModel(){Id=2,Text="English"},
                 new LanguageModel(){Id=3,Text="Dutch"},
+                new LanguageModel(){Id=4,Text="Urdu"},
+                new LanguageModel(){Id=5,Text="Tamil"},
+                new LanguageModel(){Id=6,Text="Kannad"},
+                new LanguageModel(){Id=7,Text="Bangali"},
+
             };
         }
     }

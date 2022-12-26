@@ -42,7 +42,7 @@ namespace BookStoreWebGentle.Controllers
         {
             return  View();
         }
-        [Authorize(Roles = "Admin,Ashok")]
+        
         public ViewResult ContactUs()
         {
             return View();

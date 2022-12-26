@@ -75,6 +75,8 @@ namespace BookStoreWebGentle
             services.AddScoped<IAccountRepository, AccountRepository>();
             services.AddScoped<IUserService, UserService>();
             services.AddScoped<IEmailService,   EmailService>();
+            services.AddScoped<IContactRepository, ContactRepository>();
+
 
             services.Configure<SMTPConfigModel>(_configuration.GetSection("SMTPConfig"));
             services.AddScoped<IUserClaimsPrincipalFactory<ApplicationUser>, ApplicationUserClaimsPrincipalFactory>();
