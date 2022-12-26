@@ -35,5 +35,14 @@ namespace BookStoreWebGentle.Controllers
             }
             return View();
         }
+
+        [Route("all-contacts")]
+        public async Task<ViewResult> GetAllContacts()
+        {
+            var data = await _contactRepository.GetAllContacts();
+
+            return View(data);
+        }
+
     }
 }

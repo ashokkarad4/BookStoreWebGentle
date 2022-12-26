@@ -21,28 +21,38 @@
                     <li class="nav-item">
                         <a class="nav-link text-dark" asp-controller="Home" asp-action="aboutus">AboutUs</a>
                     </li>
+                    <li class="nav-item">
+                        <a class="nav-link text-dark" asp-controller="Contact" asp-action="AddNewContact">ContactUs</a>
+                    </li>
                     @if (User.Identity.IsAuthenticated)
                     {
-                        <li class="nav-item">
-                            <a class="nav-link text-dark" asp-controller="Contact" asp-action="AddNewContact">ContactUs</a>
-                        </li>
+
                         <li class="nav-item">
                             <a class="nav-link text-dark" asp-controller="book" asp-action="getallbooks">All Books</a>
                         </li>
-                        @if (User.IsInRole("Admin"))
+                        @if ((User.IsInRole("Admin")))
                         {
                             <li>
                                 <a class="nav-link text-dark" asp-controller="book" asp-action="AddNewBook">Add New Book</a>
                             </li>
+                            <li>
+                                <a class="nav-link text-dark" asp-area="Admin" asp-controller="Home" asp-action="Index">Admin</a>
+                            </li>
+                            <li>
+                                <a class="nav-link text-dark" asp-area="" asp-controller="Contact" asp-action="GetAllContacts">AllSuggestions</a>
+                            </li>
                         }
 
                     }
-                    @if (User.IsInRole("Admin"))
-                    {
-                        <li>
-                            <a class="nav-link text-dark" asp-area="Admin" asp-controller="Home" asp-action="Index">Admin</a>
-                        </li>
-                    }
+                    @*@if (User.IsInRole("Admin"))
+        {
+            <li>
+                <a class="nav-link text-dark" asp-area="Admin" asp-controller="Home" asp-action="Index">Admin</a>
+            </li>
+            <li>
+                <a class="nav-link text-dark" asp-area="" asp-controller="Contact" asp-action="GetAllContacts">AllSuggestions</a>
+            </li>
+        }*@
 
                 </ul>
             </div>

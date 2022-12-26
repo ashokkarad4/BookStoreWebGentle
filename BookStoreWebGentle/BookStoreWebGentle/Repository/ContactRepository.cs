@@ -23,26 +23,36 @@ namespace BookStoreWebGentle.Repository
             var newContact = new ContactsData()
             {
                 //BookRepository
-                
+                      
                     FirstName = model.FirstName,
                     LastName = model.LastName,
                     Email = model.Email,
-                    Phone = model.Phone
-
+                    Phone = model.Phone,
+                    Description=model.Description
                 };
-            await _context.Contacts.AddAsync(newContact);
-           await _context.SaveChangesAsync();
-               
-
-                return newContact.Id;
-            
-           
+                 await _context.Contacts.AddAsync(newContact);
+                await _context.SaveChangesAsync();
+                return newContact.Id;  
         }
 
-     
+        public async Task<List<ContactUsModel>> GetAllContacts()
+        {
+            return await _context.Contacts
+                 .Select(contact => new ContactUsModel()
+                 {
+                     Id=contact.Id,
+                     FirstName=contact.FirstName,
+                     LastName=contact.LastName,
+                     Email=contact.Email,
+                     Phone=contact.Phone,
+                     Description=contact.Description
+                 }).ToListAsync();
+
+        }
 
 
 
-        
+
+
     }
 }
