@@ -46,7 +46,7 @@ namespace BookStoreWebGentle.Controllers
         {
             return _bookRepository.SearchBook(bookName, authorName);
         }
-        [Authorize(Roles ="Manager,Admin")]
+        [Authorize(Roles ="SuperAdmin,Admin")]
         public ViewResult AddNewBook(bool isSuccess=false, int bookId=0)
         {
             var model = new BookModel()
@@ -65,7 +65,7 @@ namespace BookStoreWebGentle.Controllers
             return View(model);
         }
         [HttpPost]
-        [Authorize(Roles = "Manager,Admin")]
+        
 
         public async Task<IActionResult> AddNewBook(BookModel bookModel)
         {

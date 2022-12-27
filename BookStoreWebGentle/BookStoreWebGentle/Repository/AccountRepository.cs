@@ -41,10 +41,16 @@ namespace BookStoreWebGentle.Repository
         {
             var user = new ApplicationUser()
             {
+
+
                 FirstName = userModel.FirstName,
                 LastName = userModel.LastName,
                 Email = userModel.Email,
-                UserName = userModel.Email
+                UserName = userModel.Email,
+                DateOfBirth=userModel.DateOfBirth,
+                PhoneNumber=userModel.PhoneNumber
+
+
 
             };
             var result = await _userManager.CreateAsync(user, userModel.Password);

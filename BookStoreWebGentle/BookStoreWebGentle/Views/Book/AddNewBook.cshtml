@@ -74,13 +74,13 @@
                 </div>
                 <br />
 
-                <div class="form-group">
+                @*<div class="form-group">
                     <div class="col-md-10">
                         <p>Upload one or more files</p>
                         <input type="file" name="files" multiple />
                     </div>
-                </div>
-                @*<div class="form-group">
+                </div>*@
+                <div class="form-group">
             <label asp-for="CoverPhoto" class="control-label"></label>
             <div class="custom-file">
                 <input asp-for="CoverPhoto" class="custom-file-input" id="customFile">
@@ -106,7 +106,7 @@
                 <label class="custom-file-label" for="customFile">Choose file</label>
             </div>
             <span asp-validation-for="BookPdf" class="text-danger"></span>
-        </div>*@
+        </div>
                 <br />
                 <div class="form-group">
                     <input type="submit" value="Add Book" class="btn btn-success" />
