@@ -5,8 +5,9 @@ using System.Threading.Tasks;
 
 namespace BookStoreWebGentle.Enum
 {
-    public enum RolesEnum
+    public enum Roles
     {
+
         SuperAdmin,
         Admin,
         Moderator,

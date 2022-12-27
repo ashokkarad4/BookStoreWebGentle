@@ -50,6 +50,7 @@ namespace BookStoreWebGentle.Repository
             var result = await _userManager.CreateAsync(user, userModel.Password);
             if (result.Succeeded)
             {
+                await _userManager.AddToRoleAsync(user, Enum.Roles.Basic.ToString());
                 await GenerateEmailConfirmationTokenAsync(user);
             }
             return result;
