@@ -41,8 +41,6 @@ namespace BookStoreWebGentle.Repository
         {
             var user = new ApplicationUser()
             {
-
-
                 FirstName = userModel.FirstName,
                 LastName = userModel.LastName,
                 Email = userModel.Email,

@@ -27,8 +27,8 @@
 
 </head>
 <body>
-    <div class="container">
-        <h4 class="display-4 bg-light">Feel Free to ContactUs</h4>
+    <div class=" container col-md-12 mb-4 mt-4">
+        <h1>Feel Free to ContactUs</h1>
         <hr />
         @if (ViewBag.IsSuccess == true)
         {
@@ -77,8 +77,8 @@
                         <textarea asp-for="Description" class="form-control"></textarea>
                         <span asp-validation-for="Description" class="text-danger"></span>
                     </div>
-                    <br />
-                    <div class="form-group">
+                   
+                    <div class="form-group mt-4 mb-3">
                         <input type="submit" value="Add Contact" class="btn btn-success" />
                     </div>
                     <div>

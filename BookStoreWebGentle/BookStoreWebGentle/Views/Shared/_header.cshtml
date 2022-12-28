@@ -31,22 +31,34 @@
                             <a class="nav-link text-dark" asp-controller="book" asp-action="getallbooks">Books</a>
                         </li>
 
-                        @if ((User.IsInRole("SuperAdmin"))|| (User.IsInRole("Admin")))
+                        @if ((User.IsInRole("SuperAdmin")) || (User.IsInRole("Admin")))
                         {
                             <li>
-                                <a class="nav-link text-dark" asp-controller="book" asp-action="AddNewBook">AddBook</a>
+                                <a class="nav-link text-dark" asp-controller="book" asp-action="addnewbook">Addbook</a>
                             </li>
                             <li>
-                                <a class="nav-link text-dark" asp-controller="RoleManager" asp-action="Index">CreateRole</a>
+                                <a class="nav-link text-dark" asp-controller="rolemanager" asp-action="index">CreateRole</a>
                             </li>
                             <li>
-                                <a class="nav-link text-dark" asp-controller="UserRoles" asp-action="Index">ManageRole</a>
+                                <a class="nav-link text-dark" asp-controller="userroles" asp-action="index">ManageRole</a>
                             </li>
                             <li>
-                                <a class="nav-link text-dark" asp-area="" asp-controller="Contact" asp-action="GetAllContacts">Suggestions</a>
+                                <a class="nav-link text-dark" asp-area="" asp-controller="contact" asp-action="getallcontacts">Suggestions</a>
                             </li>
+
+                            @*<li class="nav-item dropdown ">
+                                <a class="nav-link dropdown-toggle text-dark" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                               Super Admin </a>
+                                <div class="dropdown-menu bg-body" aria-labelledby="navbarDropdown ">
+                                    <a class="dropdown-item" asp-action="AddNewBook" asp-controller="book">AddBook</a>
+                                    <a class="dropdown-item" asp-action="Index" asp-controller="RoleManager">Create Roles</a>
+                                    <a class="dropdown-item" asp-action="Index" asp-controller="UserRoles">Manage Roles</a>
+                                    <a class="dropdown-item" asp-action="GetAllContacts" asp-controller="Contact">Suggestions</a>
+
+                                </div>
+                            </li>*@
                         }
-                     
+
 
                     }
                     @*@if (User.IsInRole("Admin"))
