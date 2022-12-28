@@ -3,7 +3,7 @@
     ViewData["Title"] = "Manage";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
-<div class="container col-md-6"   style="margin: 30px 20px; ">
+<div class="container col-md-6"   style="margin: 30px 110px; ">
 
     <form method="post">
         <div class="card">
@@ -26,10 +26,10 @@
                 <div asp-validation-summary="All" class="text-danger"></div>
             </div>
             <div class="card-footer">
-                <input type="submit" value="Update" class="btn btn-primary"
+                <input type="submit" value="Update" class="btn btn-success"
                        style="width:auto" />
                 <a asp-action="Index" asp-controller="UserRoles"
-                   class="btn btn-primary" style="width:auto">Cancel</a>
+                   class="btn btn-danger" style="width:auto">Cancel</a>
             </div>
         </div>
     </form>
