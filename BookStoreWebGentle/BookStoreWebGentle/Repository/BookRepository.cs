@@ -19,7 +19,7 @@ namespace BookStoreWebGentle.Repository
         {
             var newBook = new Books()
             {
-                //BookRepository
+              //  Id = model.Id,
                 Title = model.Title,
                 Author = model.Author,
                 Description = model.Description,

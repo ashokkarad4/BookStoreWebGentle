@@ -65,8 +65,7 @@ namespace BookStoreWebGentle.Controllers
             return View(model);
         }
         [HttpPost]
-        
-
+        [Authorize(Roles = "SuperAdmin,Admin")]
         public async Task<IActionResult> AddNewBook(BookModel bookModel)
         {
 

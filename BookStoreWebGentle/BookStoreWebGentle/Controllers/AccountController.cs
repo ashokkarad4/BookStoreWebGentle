@@ -18,50 +18,18 @@ namespace BookStoreWebGentle.Controllers
             _accountRepository = accountRepository;
         }
 
-        //[Route("signup")]
-        //public IActionResult Signup()
-        //{
-        //    return View();
-        //}
-
-        //[Route("signup")]
-        //[HttpPost]
-        //public async Task<IActionResult> Signup(SignUpUserModel userModel)
-        //{
-        //    if (ModelState.IsValid)
-        //    {
-        //        // write your code
-        //        var result = await _accountRepository.CreateUserAsync(userModel);
-        //        if (!result.Succeeded)
-        //        {
-        //            foreach (var errorMessage in result.Errors)
-        //            {
-        //                ModelState.AddModelError("", errorMessage.Description);
-        //            }
-
-        //            return View(userModel);
-        //        }
-
-        //        ModelState.Clear();
-        //        return RedirectToAction("ConfirmEmail", new { email = userModel.Email });
-        //    }
-
-        //    return View(userModel);
-        //}
-
         [Route("signup")]
-        public IActionResult SignUp()
+        public IActionResult Signup()
         {
             return View();
         }
 
         [Route("signup")]
         [HttpPost]
-        public async Task<IActionResult> SignUp(SignUpUserModel userModel)
+        public async Task<IActionResult> Signup(SignUpUserModel userModel)
         {
             if (ModelState.IsValid)
             {
-                // write your code
                 var result = await _accountRepository.CreateUserAsync(userModel);
                 if (!result.Succeeded)
                 {
@@ -69,15 +37,45 @@ namespace BookStoreWebGentle.Controllers
                     {
                         ModelState.AddModelError("", errorMessage.Description);
                     }
+
                     return View(userModel);
                 }
-                ViewBag.IsSuccess = true;
+
                 ModelState.Clear();
-                return View();
+                return RedirectToAction("ConfirmEmail", new { email = userModel.Email });
             }
 
             return View(userModel);
         }
+
+        //[Route("signup")]
+        //public IActionResult SignUp()
+        //{
+        //    return View();
+        //}
+
+        //[Route("signup")]
+        //[HttpPost]
+        //public async Task<IActionResult> SignUp(SignUpUserModel userModel)
+        //{
+        //    if (ModelState.IsValid)
+        //    {
+        //        var result = await _accountRepository.CreateUserAsync(userModel);
+        //        if (!result.Succeeded)
+        //        {
+        //            foreach (var errorMessage in result.Errors)
+        //            {
+        //                ModelState.AddModelError("", errorMessage.Description);
+        //            }
+        //            return View(userModel);
+        //        }
+        //        ViewBag.IsSuccess = true;
+        //        ModelState.Clear();
+        //        return View();
+        //    }
+
+        //    return View(userModel);
+        //}
 
 
         [Route("login")]
@@ -209,7 +207,7 @@ namespace BookStoreWebGentle.Controllers
         {
             if (ModelState.IsValid)
             {
-                // code here
+                
                 var user = await _accountRepository.GetUserByEmailAsync(model.Email);
                 if (user != null)
                 {

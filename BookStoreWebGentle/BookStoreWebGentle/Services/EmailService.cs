@@ -15,7 +15,10 @@ namespace BookStoreWebGentle.Services
     {
         private const string templatePath = @"EmailTemplate/{0}.html";
         private readonly SMTPConfigModel _smtpConfig;
-
+        public EmailService(IOptions<SMTPConfigModel> smtpConfig)
+        {
+            _smtpConfig = smtpConfig.Value;
+        }   
         public async Task SendTestEmail(UserEmailOptions userEmailOptions)
         {
             userEmailOptions.Subject = UpdatePlaceHolders("Hello {{UserName}}, This is test email subject from book store web app", userEmailOptions.PlaceHolders);
@@ -42,12 +45,6 @@ namespace BookStoreWebGentle.Services
 
             await SendEmail(userEmailOptions);
         }
-
-        public EmailService(IOptions<SMTPConfigModel> smtpConfig)
-        {
-            _smtpConfig = smtpConfig.Value;
-        }
-
         private async Task SendEmail(UserEmailOptions userEmailOptions)
         {
             MailMessage mail = new MailMessage
