@@ -59,7 +59,8 @@ namespace BookStoreWebGentle.Controllers
             {
                 var userRolesViewModel = new ManageUserRolesViewModel
                 {
-                    RoleId = role.Id,
+                    RoleId = Guid.Parse(role.Id.ToString()),
+               // RoleId = role.Id,
                     RoleName = role.Name
                 };
                 if (await _userManager.IsInRoleAsync(user, role.Name))

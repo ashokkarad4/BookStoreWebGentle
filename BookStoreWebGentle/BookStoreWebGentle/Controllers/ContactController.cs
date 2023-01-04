@@ -13,12 +13,13 @@ namespace BookStoreWebGentle.Controllers
     {
         private readonly IContactRepository _contactRepository = null;
         private readonly IWebHostEnvironment _webHostEnvironment = null;
-      
+
         public ContactController(IContactRepository contactRepository, IWebHostEnvironment webHostEnvironment)
         {
             _contactRepository = contactRepository;
             _webHostEnvironment = webHostEnvironment;
         }
+        [HttpGet]
         public ViewResult AddnewContact(bool isSuccess=false,int contactId=0)
         {
             ViewBag.IsSuccess = isSuccess;

@@ -59,14 +59,13 @@ namespace BookStoreWebGentle
 
             services.ConfigureApplicationCookie(config =>
             {
-                config.LoginPath = _configuration["Application:LogiPath"];
+                config.LoginPath = _configuration["Application:LoginPath"];
                 });
             services.AddControllersWithViews();
 #if DEBUG
             services.AddRazorPages();
               //  option =>
             //{
-
               //  option.HtmlHelperOptions.ClientValidationEnabled = false;
             //
           //  });
@@ -75,8 +74,8 @@ namespace BookStoreWebGentle
             services.AddScoped<IAccountRepository, AccountRepository>();
             services.AddScoped<IUserService, UserService>();
             services.AddScoped<IEmailService,   EmailService>();
-            services.AddScoped<IContactRepository, ContactRepository>();
 
+            services.AddScoped<IContactRepository, ContactRepository>();
 
             services.Configure<SMTPConfigModel>(_configuration.GetSection("SMTPConfig"));
             services.AddScoped<IUserClaimsPrincipalFactory<ApplicationUser>, ApplicationUserClaimsPrincipalFactory>();
@@ -96,6 +95,7 @@ namespace BookStoreWebGentle
             app.UseRouting();
 
             app.UseAuthentication();
+
             app.UseAuthorization();
             app.UseEndpoints(endpoints =>
             {

@@ -33,5 +33,30 @@ namespace BookStoreWebGentle.Controllers
             }
             return RedirectToAction("Index");
         }
+
+        //[HttpPost]
+        //[Authorize(Roles = "SuperAdmin")]
+        //public async Task<IActionResult> DeleteRole(string roleId)
+        //{
+        //    var role = await _roleManager.FindByIdAsync(roleId);
+        //    if (role == null)
+        //    {
+        //        ViewBag.ErrorMessage = $"Role with Id = {roleId} cannot be found";
+        //        return View("Index");
+        //    }
+        //    else
+        //    {
+        //        var result = await _roleManager.DeleteAsync(role);
+        //        if (result.Succeeded)
+        //        {
+        //            return RedirectToAction("Index", "UserRoles");
+        //        }
+        //        foreach (var error in result.Errors)
+        //        {
+        //            ModelState.AddModelError("", error.Description);
+        //        }
+        //        return View("Index", "RoleManager");
+        //    }
+        //}
     }
 }
