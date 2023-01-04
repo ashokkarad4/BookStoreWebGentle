@@ -19,7 +19,7 @@ namespace BookStoreWebGentle.Repository
         {
             var newBook = new Books()
             {
-              //  Id = model.Id,
+                Id = model.Id,
                 Title = model.Title,
                 Author = model.Author,
                 Description = model.Description,
@@ -30,10 +30,8 @@ namespace BookStoreWebGentle.Repository
                 Language = model.Language,
                 CoverImageUrl = model.CoverImageUrl,
                 BookPdfUrl = model.BookPdfUrl
-
             };
             newBook.bookGallery = new List<BookGallery>();
-
             foreach (var file in model.Gallery)
             {
                 newBook.bookGallery.Add(new BookGallery()
@@ -42,22 +40,15 @@ namespace BookStoreWebGentle.Repository
                     URL = file.URL
                 });
             }
-
             await _context.Books.AddAsync(newBook);
             await _context.SaveChangesAsync();
-
             return newBook.Id;
         }
-
-
-
         public async Task<List<BookModel>> GetAllBooks()
         {
             return await _context.Books
                  .Select(book => new BookModel()
                  {
-
-
                      Author = book.Author,
                      Category = book.Category,
                      Description = book.Description,
@@ -67,12 +58,8 @@ namespace BookStoreWebGentle.Repository
                      Price = (int?)book.Price,
                      TotalPages = book.TotalPages,
                      CoverImageUrl = book.CoverImageUrl
-
-
                  }).ToListAsync();
-
         }
-
         public async Task<List<BookModel>> GetTopBooksAsync(int count)
         {
             return await _context.Books

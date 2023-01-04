@@ -42,18 +42,10 @@ namespace BookStoreWebGentle.Controllers
 
             return View(data);
         }
-        public List<BookModel> SearchBooks(string bookName, string authorName)
-        {
-            return _bookRepository.SearchBook(bookName, authorName);
-        }
+      
         [Authorize(Roles ="SuperAdmin,Admin")]
         public ViewResult AddNewBook(bool isSuccess=false, int bookId=0)
         {
-            var model = new BookModel()
-            {
-              // Language = "English"
-            };
-
             ViewBag.Language = GetLanguage().Select(x => new SelectListItem()
             {
                 Text=x.Text
@@ -62,7 +54,7 @@ namespace BookStoreWebGentle.Controllers
             ViewBag.IsSuccess = isSuccess;
             ViewBag.BookId = bookId;
 
-            return View(model);
+            return View();
         }
         [HttpPost]
         [Authorize(Roles = "SuperAdmin,Admin")]
@@ -123,7 +115,10 @@ namespace BookStoreWebGentle.Controllers
             await file.CopyToAsync(new FileStream(serverFolder, FileMode.Create));
             return "/" + folderPath;    
         }
-
+        public List<BookModel> SearchBooks(string bookName, string authorName)
+        {
+            return _bookRepository.SearchBook(bookName, authorName);
+        }
         private List<LanguageModel> GetLanguage()
         {
             return new List<LanguageModel>()

@@ -1,4 +1,5 @@
 ﻿using BookStoreWebGentle.Models;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -9,6 +10,7 @@ using System.Threading.Tasks;
 
 namespace BookStoreWebGentle.Controllers
 {
+
     public class UserRolesController : Controller
     {
         private readonly UserManager<ApplicationUser> _userManager;
@@ -43,7 +45,7 @@ namespace BookStoreWebGentle.Controllers
 
         public async Task<IActionResult> Manage(string userId)
         {
-          
+
             ViewBag.userId = userId;
             var user = await _userManager.FindByIdAsync(userId);
             if (user == null)
@@ -73,6 +75,7 @@ namespace BookStoreWebGentle.Controllers
             return View(model);
         }
         [HttpPost]
+        [Authorize(Roles ="SuperAdmin")]
         public async Task<IActionResult> Manage(List<ManageUserRolesViewModel> model, string userId)
         {
             var user = await _userManager.FindByIdAsync(userId);
@@ -95,9 +98,34 @@ namespace BookStoreWebGentle.Controllers
                     ModelState.AddModelError("", "Cannot add selected roles to user");
                     return View(model);
                 }
-                
+
             }
             return RedirectToAction("Index");
+        }
+        
+
+        [HttpPost]
+        public async Task<IActionResult> DeleteUser(string userId)
+        {
+            var user = await _userManager.FindByIdAsync(userId);
+            if (user == null)
+            {
+                ViewBag.ErrorMessage = $"User with Id = {userId} cannot be found";
+                return View("Index");
+            }
+            else
+            {
+                var result = await _userManager.DeleteAsync(user);
+                if (result.Succeeded)
+                {
+                    return RedirectToAction("Index", "UserRoles");
+                }
+                foreach (var error in result.Errors)
+                {
+                    ModelState.AddModelError("", error.Description);
+                }
+                return View("Index","UserRoles");
+            }
         }
     }
 }

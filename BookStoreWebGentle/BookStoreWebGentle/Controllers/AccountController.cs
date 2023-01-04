@@ -48,36 +48,6 @@ namespace BookStoreWebGentle.Controllers
             return View(userModel);
         }
 
-        //[Route("signup")]
-        //public IActionResult SignUp()
-        //{
-        //    return View();
-        //}
-
-        //[Route("signup")]
-        //[HttpPost]
-        //public async Task<IActionResult> SignUp(SignUpUserModel userModel)
-        //{
-        //    if (ModelState.IsValid)
-        //    {
-        //        var result = await _accountRepository.CreateUserAsync(userModel);
-        //        if (!result.Succeeded)
-        //        {
-        //            foreach (var errorMessage in result.Errors)
-        //            {
-        //                ModelState.AddModelError("", errorMessage.Description);
-        //            }
-        //            return View(userModel);
-        //        }
-        //        ViewBag.IsSuccess = true;
-        //        ModelState.Clear();
-        //        return View();
-        //    }
-
-        //    return View(userModel);
-        //}
-
-
         [Route("login")]
         public IActionResult Login()
         {
@@ -125,12 +95,14 @@ namespace BookStoreWebGentle.Controllers
         }
 
         [Route("change-password")]
+        [Authorize]
         public IActionResult ChangePassword()
         {
             return View();
         }
 
         [HttpPost("change-password")]
+        [Authorize]
         public async Task<IActionResult> ChangePassword(ChangePasswordModel model)
         {
             if (ModelState.IsValid)

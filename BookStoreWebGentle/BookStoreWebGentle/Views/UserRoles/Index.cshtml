@@ -25,7 +25,11 @@
                     <td>@user.Email</td>
                     <td>@string.Join(" , ", user.Roles.ToList())</td>
                     <td>
-                        <a class="btn btn-success" asp-controller="UserRoles" asp-action="Manage" asp-route-userId="@user.UserId">Change Roles</a>
+                        
+                        <form asp-controller="UserRoles" asp-action="DeleteUser" asp-route-userId="@user.UserId" method="post">
+                            <a class="btn btn-success" asp-controller="UserRoles" asp-action="Manage" asp-route-userId="@user.UserId">Change Role</a>
+                             <button type="submit"  class="btn btn-danger">Delete Role</button>
+                        </form>
                     </td>
                 </tr>
             }
