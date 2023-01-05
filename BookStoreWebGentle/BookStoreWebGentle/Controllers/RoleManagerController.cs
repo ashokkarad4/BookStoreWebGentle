@@ -16,14 +16,14 @@ namespace BookStoreWebGentle.Controllers
         {
             _roleManager = roleManager;
         }
-        [Authorize(Roles ="SuperAdmin")]
+        [Authorize(Roles ="Ashok,SuperAdmin")]
         public async Task<IActionResult> Index()
         {
             var roles = await _roleManager.Roles.ToListAsync();
             return View(roles);
         }
         [HttpPost]
-        [Authorize(Roles = "SuperAdmin")]
+        [Authorize(Roles = "Ashok,SuperAdmin")]
 
         public async Task<IActionResult> AddRole(string roleName)
         {
