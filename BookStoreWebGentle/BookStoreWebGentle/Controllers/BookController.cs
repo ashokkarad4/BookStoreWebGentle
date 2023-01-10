@@ -17,13 +17,11 @@ namespace BookStoreWebGentle.Controllers
     {
         private readonly IBookRepository _bookRepository = null;
         private readonly IWebHostEnvironment _webHostEnvironment = null;
-        private IHostingEnvironment _environment;
 
-        public BookController(IBookRepository bookRepository, IWebHostEnvironment webHostEnvironment, IHostingEnvironment environment)
+        public BookController(IBookRepository bookRepository, IWebHostEnvironment webHostEnvironment)
         {
             _bookRepository = bookRepository;
             _webHostEnvironment = webHostEnvironment;
-            _environment = environment;
         }
 
         [Route("all-books")]
@@ -60,16 +58,13 @@ namespace BookStoreWebGentle.Controllers
         [Authorize(Roles = "SuperAdmin,Admin")]
         public async Task<IActionResult> AddNewBook(BookModel bookModel)
         {
-
              if (ModelState.IsValid)
              {
                 if (bookModel.CoverPhoto != null)
                 {
                     string folder = "books/cover/";
                   bookModel.CoverImageUrl=  await UploadImage(folder,bookModel.CoverPhoto);
-
                 }
-
                 if (bookModel.GalleryFiles != null)
                 {
                     string folder = "books/gallery/";
@@ -86,14 +81,11 @@ namespace BookStoreWebGentle.Controllers
                               bookModel.Gallery.Add(gallery);
                     }
                 }
-
-
                 if (bookModel.BookPdf != null)
                 {
                     string folder = "books/pdf/";
                     bookModel.BookPdfUrl = await UploadImage(folder, bookModel.BookPdf);
                 }
-
                 int id = await _bookRepository.AddNewBook(bookModel);
                 if (id > 0)
                 {
@@ -132,6 +124,15 @@ namespace BookStoreWebGentle.Controllers
                 new LanguageModel(){Id=7,Text="Bangali"},
 
             };
+        }
+        
+        [HttpPost]
+        [Authorize]
+        [Route("delete-book/{id:int:min(1)}", Name = "deletebookRoute")]
+        public async Task<IActionResult> DeleteBook(int id)
+        {
+            var result = await _bookRepository.DeleteBook(id);
+            return RedirectToAction("GetAllBooks", "Book");
         }
     }
 }

@@ -15,7 +15,7 @@ namespace BookStoreWebGentle.Models
         [StringLength(100, MinimumLength = 5)]
         [Required(ErrorMessage = "Please Enter the Title of your book")]
 
-      //  [MyCustomValidationAttribute("azure")]
+      
         public string Title { get; set; }
         [Required(ErrorMessage ="Please Enter the Author Of Book")]
 

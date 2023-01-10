@@ -41,11 +41,8 @@ namespace BookStoreWebGentle.Controllers
         {
             return new List<string>(await _userManager.GetRolesAsync(user));
         }
-
-
         public async Task<IActionResult> Manage(string userId)
         {
-
             ViewBag.userId = userId;
             var user = await _userManager.FindByIdAsync(userId);
             if (user == null)
@@ -60,7 +57,6 @@ namespace BookStoreWebGentle.Controllers
                 var userRolesViewModel = new ManageUserRolesViewModel
                 {
                     RoleId = Guid.Parse(role.Id.ToString()),
-               // RoleId = role.Id,
                     RoleName = role.Name
                 };
                 if (await _userManager.IsInRoleAsync(user, role.Name))
@@ -103,8 +99,6 @@ namespace BookStoreWebGentle.Controllers
             }
             return RedirectToAction("Index");
         }
-        
-
         [HttpPost]
         public async Task<IActionResult> DeleteUser(string userId)
         {

@@ -20,7 +20,7 @@ namespace BookStoreWebGentle.Controllers
             _userService = userService;
             _emailService = emailService;
         }
-        public async Task<ViewResult> Index()   
+        public ViewResult Index()   
          {
             //UserEmailOptions options = new UserEmailOptions
             //{

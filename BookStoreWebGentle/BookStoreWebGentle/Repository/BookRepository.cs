@@ -23,6 +23,7 @@ namespace BookStoreWebGentle.Repository
                 Title = model.Title,
                 Author = model.Author,
                 Description = model.Description,
+                Category=model.Category,
                 TotalPages = model.TotalPages.HasValue ? model.TotalPages.Value : 0,
                 CreatedOn = DateTime.UtcNow,
                 UpdatedOn = DateTime.UtcNow,
@@ -80,7 +81,7 @@ namespace BookStoreWebGentle.Repository
         {
             return await _context.Books.Where(x => x.Id == id)
                  .Select(book => new BookModel()
-                 {
+                 {  
                      Author = book.Author,
                      Category = book.Category,
                      Description = book.Description,
@@ -105,7 +106,18 @@ namespace BookStoreWebGentle.Repository
         {
             return null;
         }
-        
+        public async Task<int> DeleteBook(int? id)
+        {
+            var result = await _context.Books.FirstOrDefaultAsync(e => e.Id == id);
+            if (result != null)
+            {
+                _context.Books.Remove(result);
+                await _context.SaveChangesAsync();      
+            }
+            return result.Id;
+        }
+
+
         public string GetAppName()
         {
             return "Book Store Application";
