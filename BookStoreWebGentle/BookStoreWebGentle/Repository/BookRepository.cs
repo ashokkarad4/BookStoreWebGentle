@@ -100,12 +100,6 @@ namespace BookStoreWebGentle.Repository
                      BookPdfUrl = book.BookPdfUrl
                  }).FirstOrDefaultAsync();
         }
-
-
-        public List<BookModel> SearchBook(string title, string authorName)
-        {
-            return null;
-        }
         public async Task<int> DeleteBook(int? id)
         {
             var result = await _context.Books.FirstOrDefaultAsync(e => e.Id == id);
@@ -116,7 +110,19 @@ namespace BookStoreWebGentle.Repository
             }
             return result.Id;
         }
-
+        //public async Task<IEnumerable<BookModel>> Search(string title, string author)
+        //{
+        //    IQueryable<BookModel> query = (IQueryable<BookModel>)_context.Books;
+        //    if (!string.IsNullOrEmpty(title))
+        //    {
+        //        query = query.Where(e => e.Title.Contains(title));
+        //    }
+        //    if (author != null)
+        //    {
+        //        query = query.Where(e => e.Author == author);
+        //    }
+        //    return await query.ToListAsync();
+        //}
 
         public string GetAppName()
         {

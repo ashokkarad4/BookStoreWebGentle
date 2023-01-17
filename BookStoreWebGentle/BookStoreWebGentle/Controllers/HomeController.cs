@@ -35,6 +35,7 @@ namespace BookStoreWebGentle.Controllers
 
             //var userId = _userService.GetUserId();
             //var isLoggedIn = _userService.IsAuthenticated();
+
             return  View();
         }
     

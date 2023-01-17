@@ -11,8 +11,7 @@ namespace BookStoreWebGentle.Repository
         Task<BookModel> GetBookById(int id);
         Task<int> DeleteBook(int? id);
         Task<List<BookModel>> GetTopBooksAsync(int count);
-        List<BookModel> SearchBook(string title, string authorName);
-
+       // Task<IEnumerable<BookModel>> Search(string title, string author);
         string GetAppName();
      }
 }
