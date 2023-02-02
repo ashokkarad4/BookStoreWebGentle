@@ -2,7 +2,12 @@
 using BookStoreWebGentle.Services;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.Configuration;
+using Microsoft.IdentityModel.Tokens;
+using System;
 using System.Collections.Generic;
+using System.IdentityModel.Tokens.Jwt;
+using System.Security.Claims;
+using System.Text;
 using System.Threading.Tasks;
 
 
@@ -65,6 +70,7 @@ namespace BookStoreWebGentle.Repository
             }
         }
 
+
         public async Task GenerateForgotPasswordTokenAsync(ApplicationUser user)
         {
             var token = await _userManager.GeneratePasswordResetTokenAsync(user);
@@ -74,18 +80,39 @@ namespace BookStoreWebGentle.Repository
             }
         }
 
-        public async Task<SignInResult> PasswordSignInAsync(SignInModel signInModel)
+        public async Task<string> PasswordSignInAsync(SignInModel signInModel)
         {
-            return await _signInManager.PasswordSignInAsync(signInModel.Email, signInModel.Password, signInModel.RememberMe, true);
-        }
 
+            var result= await _signInManager.PasswordSignInAsync(signInModel.Email, signInModel.Password, signInModel.RememberMe, true);
+            if (!result.Succeeded)
+            {
+                return null;
+            }
+            var authclaims = new List<Claim> {
+            new Claim(ClaimTypes.Name,signInModel.Email),
+            // new Claim (ClaimTypes.Role, user.Role),
+            new Claim(JwtRegisteredClaimNames.Jti,Guid.NewGuid().ToString())
+            };
+            var authSigninkey = new SymmetricSecurityKey(Encoding.ASCII.GetBytes(_configuration["JWT:Secret"]));
+
+            var token = new JwtSecurityToken(
+                issuer: _configuration["JWT:ValidIsuser"],
+                audience: _configuration["JWT:ValidAudience"],
+                expires: DateTime.Now.AddSeconds(15),
+                claims: authclaims,
+                signingCredentials: new SigningCredentials(authSigninkey, SecurityAlgorithms.HmacSha256Signature)
+                );
+
+            return new JwtSecurityTokenHandler().WriteToken(token);
+        }
+   
         public async Task SignOutAsync()
         {
             await _signInManager.SignOutAsync();
         }
 
         public async Task<IdentityResult> ChangePasswordAsync(ChangePasswordModel model)
-        {
+        {   
             var userId = _userService.GetUserId();
             var user = await _userManager.FindByIdAsync(userId);
             return await _userManager.ChangePasswordAsync(user, model.CurrentPassword, model.NewPassword);

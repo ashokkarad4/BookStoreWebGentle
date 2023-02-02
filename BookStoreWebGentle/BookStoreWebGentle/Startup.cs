@@ -3,6 +3,7 @@ using BookStoreWebGentle.Helper;
 using BookStoreWebGentle.Models;
 using BookStoreWebGentle.Repository;
 using BookStoreWebGentle.Services;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using Microsoft.IdentityModel.Tokens;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Text;
 using System.Threading.Tasks;
 
 namespace BookStoreWebGentle
@@ -33,6 +36,33 @@ namespace BookStoreWebGentle
             services.AddDbContext<BookStoreContext>(
                 options => options.UseSqlServer(_configuration.GetConnectionString("DefaultConnection")));
 
+            services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
+            .AddJwtBearer(options =>
+            {
+                options.TokenValidationParameters = new TokenValidationParameters
+                {
+                    ValidateIssuer = true,
+                    ValidateAudience = true,
+                    ValidateLifetime = true,
+                    ValidateIssuerSigningKey = true,
+                    ValidIssuer = _configuration["Jwt:Issuer"],
+                    ValidAudience = _configuration["Jwt:Issuer"],
+                    IssuerSigningKey = new
+                    SymmetricSecurityKey
+                    (Encoding.UTF8.GetBytes
+                    (_configuration["Jwt:Key"]))
+                };
+                options.Events = new JwtBearerEvents
+                {
+                    OnMessageReceived = context =>
+                    {
+                        context.Token = context.Request.Cookies["CookieName"];
+                        return Task.CompletedTask;
+                    }
+                };
+
+            });
+
             services.AddIdentity<ApplicationUser, IdentityRole>()
                 .AddEntityFrameworkStores<BookStoreContext>().AddDefaultTokenProviders()    ;
 
@@ -45,7 +75,7 @@ namespace BookStoreWebGentle
                 options.Password.RequireNonAlphanumeric = false;
                 options.Password.RequireUppercase = false;
 
-                options.SignIn.RequireConfirmedEmail = false;
+                options.SignIn.RequireConfirmedEmail = true;
 
                 options.Lockout.DefaultLockoutTimeSpan = TimeSpan.FromMinutes(5);
                 options.Lockout.MaxFailedAccessAttempts = 3;
@@ -57,10 +87,17 @@ namespace BookStoreWebGentle
                 options.TokenLifespan = TimeSpan.FromMinutes(20);
             });
 
-            services.ConfigureApplicationCookie(config =>
+            services.ConfigureApplicationCookie(option =>
             {
-                config.LoginPath = _configuration["Application:LoginPath"];
+                option.LoginPath = "/Account/Login";
+                option.ExpireTimeSpan = TimeSpan.FromHours(10);
                 });
+
+            services.AddSession(options =>
+            {
+                options.IdleTimeout = TimeSpan.FromMinutes(5);   
+            });
+
             services.AddControllersWithViews();
 #if DEBUG
             services.AddRazorPages();
@@ -77,6 +114,8 @@ namespace BookStoreWebGentle
 
             services.AddScoped<IContactRepository, ContactRepository>();
 
+            services.AddScoped<ITokenService, TokenService>();
+            services.AddScoped<IUserRepository, UserRepository>();
             services.Configure<SMTPConfigModel>(_configuration.GetSection("SMTPConfig"));
             services.AddScoped<IUserClaimsPrincipalFactory<ApplicationUser>, ApplicationUserClaimsPrincipalFactory>();
 
@@ -89,9 +128,18 @@ namespace BookStoreWebGentle
             {
                 app.UseDeveloperExceptionPage();
             }
+            app.UseSession();
+            app.Use(async (context, next) =>
+            {
+                var token = context.Session.GetString("Token");
+                if (!string.IsNullOrEmpty(token))
+                {
+                    context.Request.Headers.Add("Authorization", "Bearer " + token);
+                }
+                await next();
+            });
 
             app.UseStaticFiles();
-
             app.UseRouting();
 
             app.UseAuthentication();

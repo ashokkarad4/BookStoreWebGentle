@@ -1,7 +1,11 @@
 ﻿using BookStoreWebGentle.Models;
 using BookStoreWebGentle.Repository;
+using BookStoreWebGentle.Services;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Configuration;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -12,10 +16,18 @@ namespace BookStoreWebGentle.Controllers
     public class AccountController : Controller
     {
         private readonly IAccountRepository _accountRepository;
+        private readonly IConfiguration _configuration;
+        private string generatedToken = null;
+        private readonly ITokenService _tokenService;
+        private readonly IUserRepository _userRepository;
 
-        public AccountController(IAccountRepository accountRepository)
+
+        public AccountController(IAccountRepository accountRepository, IConfiguration configuration,ITokenService tokenService, IUserRepository userRepository)
         {
             _accountRepository = accountRepository;
+            _configuration = configuration;
+            _tokenService = tokenService;
+            _userRepository = userRepository;
         }
 
         [Route("signup")]
@@ -56,37 +68,79 @@ namespace BookStoreWebGentle.Controllers
 
         [Route("login")]
         [HttpPost]
-        public async Task<IActionResult> Login(SignInModel signInModel, string returnUrl)
+        public async Task<IActionResult> Login(SignInModel signInModel)
         {
-            if (ModelState.IsValid)
+            var result = await _accountRepository.PasswordSignInAsync(signInModel);
+            if (string.IsNullOrEmpty(result))
             {
-                var result = await _accountRepository.PasswordSignInAsync(signInModel);
-                if (result.Succeeded)
+                return RedirectToAction("Index", "Home");
+            }
+            //return View(result);
+
+            if (string.IsNullOrEmpty(signInModel.Email) || string.IsNullOrEmpty(signInModel.Password))
+            {
+                return (RedirectToAction("Error"));
+            }
+
+            if (result != null)
+            {
+                
+                if (result != null)
                 {
-                    if (!string.IsNullOrEmpty(returnUrl))
-                    {
-                        return LocalRedirect(returnUrl);
-                    }
-                    return RedirectToAction("Index", "Home");
-                }
-                if (result.IsNotAllowed)
-                {
-                    ModelState.AddModelError("", "Not allowed to login");
-                }
-                else if (result.IsLockedOut)
-                {
-                    ModelState.AddModelError("", "Account blocked. Try after some time.");
+                    HttpContext.Session.SetString("Token", result);
+                    return RedirectToAction("MainWindow");
                 }
                 else
                 {
-                    ModelState.AddModelError("", "Invalid credentials");
+                    return (RedirectToAction("Error"));
                 }
-
             }
-
-            return View(signInModel);
+            else
+            {
+                return (RedirectToAction("Error"));
+            }
+        }
+        private UserDTO GetUser(SignInModel userModel)
+        {
+            //Write your code here to authenticate the user
+            return _userRepository.GetUser(userModel);
         }
 
+        [Authorize]
+        [Route("mainwindow")]
+        [HttpGet]
+        public IActionResult MainWindow()
+            {
+            string token = HttpContext.Session.GetString("Token");
+
+            if (token == null)
+            {
+                return (RedirectToAction("Index"));
+            }
+            ViewBag.Message = BuildMessage(token, 50);
+            return View();
+        }
+
+        public IActionResult Error()
+        {
+            ViewBag.Message = "An error occured...";
+            return View();
+        }
+        private string BuildMessage(string stringToSplit, int chunkSize)
+        {
+            var data = Enumerable.Range(0, stringToSplit.Length / chunkSize)
+                .Select(i => stringToSplit.Substring(i * chunkSize, chunkSize));
+
+            string result = "The generated token is:";
+
+            foreach (string str in data)
+            {
+                result += Environment.NewLine + str;
+            }
+
+            return result;
+        }
+    
         [Route("logout")]
         public async Task<IActionResult> Logout()
         {
@@ -225,4 +279,4 @@ namespace BookStoreWebGentle.Controllers
             return View(model);
         }
     }
-}
+}   
