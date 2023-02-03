@@ -1,5 +1,6 @@
 ﻿using BookStoreWebGentle.Models;
 using BookStoreWebGentle.Services;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.Configuration;
 using Microsoft.IdentityModel.Tokens;
@@ -80,35 +81,36 @@ namespace BookStoreWebGentle.Repository
             }
         }
 
-        public async Task<string> PasswordSignInAsync(SignInModel signInModel)
-        {
+        //public async Task<string> PasswordSignInAsync(SignInModel signInModel)
+        //{
 
-            var result= await _signInManager.PasswordSignInAsync(signInModel.Email, signInModel.Password, signInModel.RememberMe, true);
-            if (!result.Succeeded)
-            {
-                return null;
-            }
-            var authclaims = new List<Claim> {
-            new Claim(ClaimTypes.Name,signInModel.Email),
-            // new Claim (ClaimTypes.Role, user.Role),
-            new Claim(JwtRegisteredClaimNames.Jti,Guid.NewGuid().ToString())
-            };
-            var authSigninkey = new SymmetricSecurityKey(Encoding.ASCII.GetBytes(_configuration["JWT:Secret"]));
+        //    var result= await _signInManager.PasswordSignInAsync(signInModel.UserName, signInModel.Password, signInModel.RememberMe, true);
+        //    if (!result.Succeeded)
+        //    {
+        //        return null;
+        //    }
+        //    var authclaims = new List<Claim> {
+        //    new Claim(ClaimTypes.Name,signInModel.UserName),
+        //    // new Claim (ClaimTypes.Role, user.Role),
+        //    new Claim(JwtRegisteredClaimNames.Jti,Guid.NewGuid().ToString())
+        //    };
+        //    var authSigninkey = new SymmetricSecurityKey(Encoding.ASCII.GetBytes(_configuration["JWT:Secret"]));
 
-            var token = new JwtSecurityToken(
-                issuer: _configuration["JWT:ValidIsuser"],
-                audience: _configuration["JWT:ValidAudience"],
-                expires: DateTime.Now.AddSeconds(15),
-                claims: authclaims,
-                signingCredentials: new SigningCredentials(authSigninkey, SecurityAlgorithms.HmacSha256Signature)
-                );
+        //    var token = new JwtSecurityToken(
+        //        issuer: _configuration["JWT:ValidIsuser"],
+        //        audience: _configuration["JWT:ValidAudience"],
+        //        expires: DateTime.Now.AddHours(1),
+        //        claims: authclaims,
+        //        signingCredentials: new SigningCredentials(authSigninkey, SecurityAlgorithms.HmacSha256Signature)
+        //        );
 
-            return new JwtSecurityTokenHandler().WriteToken(token);
-        }
+        //    return new JwtSecurityTokenHandler().WriteToken(token);
+        //}
    
         public async Task SignOutAsync()
         {
             await _signInManager.SignOutAsync();
+
         }
 
         public async Task<IdentityResult> ChangePasswordAsync(ChangePasswordModel model)

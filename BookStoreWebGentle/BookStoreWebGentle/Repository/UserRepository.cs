@@ -45,7 +45,7 @@ namespace BookStoreWebGentle.Repository
         }
         public UserDTO GetUser(SignInModel signInModel)
         {
-            return users.Where(x => x.UserName.ToLower() == signInModel.Email.ToLower()
+            return users.Where(x => x.UserName.ToLower() == signInModel.UserName.ToLower()
                 && x.Password == signInModel.Password).FirstOrDefault();
         }
     }

@@ -1,5 +1,6 @@
 using BookStoreWebGentle.Data;
 using BookStoreWebGentle.Helper;
+using BookStoreWebGentle.JWTToken;
 using BookStoreWebGentle.Models;
 using BookStoreWebGentle.Repository;
 using BookStoreWebGentle.Services;
@@ -14,14 +15,12 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.IdentityModel.Tokens;
 using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
 namespace BookStoreWebGentle
 {
-     
+
     public class Startup
     {
         private readonly IConfiguration _configuration;
@@ -33,38 +32,54 @@ namespace BookStoreWebGentle
         // For more information on how to configure your application, visit https://go.microsoft.com/fwlink/?LinkID=398940
         public void ConfigureServices(IServiceCollection services)
         {
+            var jwtSettings = new JwtSettings();
+            _configuration.Bind("JwtSettings", jwtSettings);
+            services.AddSingleton(jwtSettings);
+            services.AddTransient<JwtTokenCreator>();
             services.AddDbContext<BookStoreContext>(
                 options => options.UseSqlServer(_configuration.GetConnectionString("DefaultConnection")));
 
-            services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
-            .AddJwtBearer(options =>
+            services.AddAuthentication(i =>
             {
-                options.TokenValidationParameters = new TokenValidationParameters
+                i.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+                i.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+                i.DefaultScheme = JwtBearerDefaults.AuthenticationScheme;
+                i.DefaultSignInScheme = JwtBearerDefaults.AuthenticationScheme;
+            })
+                .AddJwtBearer(options =>
                 {
-                    ValidateIssuer = true,
-                    ValidateAudience = true,
-                    ValidateLifetime = true,
-                    ValidateIssuerSigningKey = true,
-                    ValidIssuer = _configuration["Jwt:Issuer"],
-                    ValidAudience = _configuration["Jwt:Issuer"],
-                    IssuerSigningKey = new
-                    SymmetricSecurityKey
-                    (Encoding.UTF8.GetBytes
-                    (_configuration["Jwt:Key"]))
-                };
-                options.Events = new JwtBearerEvents
-                {
-                    OnMessageReceived = context =>
+                    options.TokenValidationParameters = new TokenValidationParameters
                     {
-                        context.Token = context.Request.Cookies["CookieName"];
-                        return Task.CompletedTask;
-                    }
-                };
+                        ValidateIssuer = true,
+                        ValidateAudience = true,
+                        ValidateLifetime = true,
+                        ValidateIssuerSigningKey = true,
+                        ValidIssuer = jwtSettings.Issuer,
+                        ValidAudience = jwtSettings.Audience,
+                        IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(jwtSettings.Key)),
+                       // ClockSkew = jwtSettings.Expire
+                    };
+                    options.SaveToken = true;
+                    options.Events = new JwtBearerEvents();
+                    options.Events.OnMessageReceived = context => {
 
-            });
+                        if (context.Request.Cookies.ContainsKey("Access-Token"))
+                        {
+                            context.Token = context.Request.Cookies["Access-Token"];
+                        }
+
+                        return Task.CompletedTask;
+                    };
+                })
+                .AddCookie(options =>
+                {
+                    options.Cookie.SameSite = SameSiteMode.Strict;
+                    options.Cookie.SecurePolicy = CookieSecurePolicy.Always;
+                    options.Cookie.IsEssential = true;
+                });
 
             services.AddIdentity<ApplicationUser, IdentityRole>()
-                .AddEntityFrameworkStores<BookStoreContext>().AddDefaultTokenProviders()    ;
+                .AddEntityFrameworkStores<BookStoreContext>().AddDefaultTokenProviders();
 
             services.Configure<IdentityOptions>(options =>
             {
@@ -90,27 +105,27 @@ namespace BookStoreWebGentle
             services.ConfigureApplicationCookie(option =>
             {
                 option.LoginPath = "/Account/Login";
-                option.ExpireTimeSpan = TimeSpan.FromHours(10);
-                });
+                option.ExpireTimeSpan = TimeSpan.FromHours(1);
+            });
 
             services.AddSession(options =>
             {
-                options.IdleTimeout = TimeSpan.FromMinutes(5);   
+                options.IdleTimeout = TimeSpan.FromMinutes(10);
             });
 
             services.AddControllersWithViews();
 #if DEBUG
             services.AddRazorPages();
-              //  option =>
+            //  option =>
             //{
-              //  option.HtmlHelperOptions.ClientValidationEnabled = false;
+            //  option.HtmlHelperOptions.ClientValidationEnabled = false;
             //
-          //  });
+            //  });
 #endif
             services.AddScoped<IBookRepository, BookRepository>();
             services.AddScoped<IAccountRepository, AccountRepository>();
             services.AddScoped<IUserService, UserService>();
-            services.AddScoped<IEmailService,   EmailService>();
+            services.AddScoped<IEmailService, EmailService>();
 
             services.AddScoped<IContactRepository, ContactRepository>();
 
@@ -127,35 +142,34 @@ namespace BookStoreWebGentle
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
-            }
-            app.UseSession();
-            app.Use(async (context, next) =>
-            {
-                var token = context.Session.GetString("Token");
-                if (!string.IsNullOrEmpty(token))
+
+                app.UseStaticFiles();
+                app.UseSession();
+                app.Use(async (context, next) =>
                 {
-                    context.Request.Headers.Add("Authorization", "Bearer " + token);
-                }
-                await next();
-            });
+                    var token = context.Session.GetString("Token");
+                    if (!string.IsNullOrEmpty(token))
+                    {
+                        context.Request.Headers.Add("Authorization", "Bearer " + token);
+                    }
+                    await next();
+                });
 
-            app.UseStaticFiles();
-            app.UseRouting();
+                app.UseAuthentication();
+                app.UseRouting();
+                app.UseAuthorization();
+                app.UseEndpoints(endpoints =>
+                {
+                    endpoints.MapDefaultControllerRoute();
+                    //endpoints.MapControllerRoute(
+                    //    name: "Default",
+                    //    pattern: "bookApp/{controller=Home}/{action=Index}/{id?}");
 
-            app.UseAuthentication();
-
-            app.UseAuthorization();
-            app.UseEndpoints(endpoints =>
-            {
-                endpoints.MapDefaultControllerRoute();
-                //endpoints.MapControllerRoute(
-                //    name: "Default",
-                //    pattern: "bookApp/{controller=Home}/{action=Index}/{id?}");
-
-                endpoints.MapControllerRoute(
-                    name: "MyArea",
-                    pattern: "{area:exists}/{controller=Home}/{action=Index}/{id?}");
-            });
+                    endpoints.MapControllerRoute(
+                            name: "MyArea",
+                            pattern: "{area:exists}/{controller=Home}/{action=Index}/{id?}");
+                });
+            }
         }
     }
 }

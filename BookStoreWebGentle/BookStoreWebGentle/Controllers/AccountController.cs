@@ -1,6 +1,8 @@
-﻿using BookStoreWebGentle.Models;
+﻿using BookStoreWebGentle.JWTToken;
+using BookStoreWebGentle.Models;
 using BookStoreWebGentle.Repository;
 using BookStoreWebGentle.Services;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
@@ -18,16 +20,21 @@ namespace BookStoreWebGentle.Controllers
         private readonly IAccountRepository _accountRepository;
         private readonly IConfiguration _configuration;
         private string generatedToken = null;
+        private readonly UserManager<ApplicationUser> _userManager;
+        private readonly SignInManager<ApplicationUser> _signInManager;
         private readonly ITokenService _tokenService;
         private readonly IUserRepository _userRepository;
+        private readonly JwtTokenCreator _jwtCreator;
 
 
-        public AccountController(IAccountRepository accountRepository, IConfiguration configuration,ITokenService tokenService, IUserRepository userRepository)
+
+        public AccountController(UserManager<ApplicationUser> userManager,SignInManager<ApplicationUser> signInManager,JwtTokenCreator jwtCreator,IAccountRepository accountRepository, IConfiguration configuration,ITokenService tokenService, IUserRepository userRepository)
         {
             _accountRepository = accountRepository;
             _configuration = configuration;
             _tokenService = tokenService;
             _userRepository = userRepository;
+            _jwtCreator = jwtCreator; _signInManager = signInManager; _userManager = userManager;
         }
 
         [Route("signup")]
@@ -69,83 +76,62 @@ namespace BookStoreWebGentle.Controllers
         [Route("login")]
         [HttpPost]
         public async Task<IActionResult> Login(SignInModel signInModel)
-        {
-            var result = await _accountRepository.PasswordSignInAsync(signInModel);
-            if (string.IsNullOrEmpty(result))
+    {
+            if (ModelState.IsValid)
             {
-                return RedirectToAction("Index", "Home");
-            }
-            //return View(result);
+                var signIn = await _signInManager.PasswordSignInAsync(signInModel.UserName, signInModel.Password, false, false);
 
-            if (string.IsNullOrEmpty(signInModel.Email) || string.IsNullOrEmpty(signInModel.Password))
-            {
-                return (RedirectToAction("Error"));
-            }
-
-            if (result != null)
-            {
-                
-                if (result != null)
+                if (signIn.Succeeded)
                 {
-                    HttpContext.Session.SetString("Token", result);
-                    return RedirectToAction("MainWindow");
+                    var user = await _userManager.FindByEmailAsync(signInModel.UserName);
+                    var token = _jwtCreator.Generate(user.Email, user.Id);
+
+                    user.RefreshToken = Guid.NewGuid().ToString();
+
+                    await _userManager.UpdateAsync(user);
+
+                    Response.Cookies.Append("X-Access-Token", token, new CookieOptions() { HttpOnly = true, SameSite = SameSiteMode.Strict });
+                    Response.Cookies.Append("X-Username", user.UserName, new CookieOptions() { HttpOnly = true, SameSite = SameSiteMode.Strict });
+                    Response.Cookies.Append("X-Refresh-Token", user.RefreshToken, new CookieOptions() { HttpOnly = true, SameSite = SameSiteMode.Strict });
+
+                    return RedirectToAction("Index","Home");
                 }
                 else
                 {
-                    return (RedirectToAction("Error"));
+                    return BadRequest(new { signIn.IsLockedOut, signIn.IsNotAllowed, signIn.RequiresTwoFactor });
                 }
             }
             else
-            {
-                return (RedirectToAction("Error"));
-            }
+                return BadRequest(ModelState);
         }
-        private UserDTO GetUser(SignInModel userModel)
+        [HttpGet("refresh")]
+        public async Task<IActionResult> Refresh()
         {
-            //Write your code here to authenticate the user
-            return _userRepository.GetUser(userModel);
+            if (!(Request.Cookies.TryGetValue("X-Username", out var userName) && Request.Cookies.TryGetValue("X-Refresh-Token", out var refreshToken)))
+                return BadRequest();
+            var user = _userManager.Users.FirstOrDefault(i => i.UserName == userName && i.RefreshToken == refreshToken);
+            if (user == null)
+                return BadRequest();
+            var token = _jwtCreator.Generate(user.Email, user.Id);
+            user.RefreshToken = Guid.NewGuid().ToString();
+            await _userManager.UpdateAsync(user);
+            Response.Cookies.Append("X-Access-Token", token, new CookieOptions() { HttpOnly = true, SameSite = SameSiteMode.Strict });
+            Response.Cookies.Append("X-Username", user.UserName, new CookieOptions() { HttpOnly = true, SameSite = SameSiteMode.Strict });
+            Response.Cookies.Append("X-Refresh-Token", user.RefreshToken, new CookieOptions() { HttpOnly = true, SameSite = SameSiteMode.Strict });
+
+            return Ok();
         }
 
-        [Authorize]
-        [Route("mainwindow")]
-        [HttpGet]
-        public IActionResult MainWindow()
-            {
-            string token = HttpContext.Session.GetString("Token");
-
-            if (token == null)
-            {
-                return (RedirectToAction("Index"));
-            }
-            ViewBag.Message = BuildMessage(token, 50);
-            return View();
-        }
-
-        public IActionResult Error()
-        {
-            ViewBag.Message = "An error occured...";
-            return View();
-        }
-        private string BuildMessage(string stringToSplit, int chunkSize)
-        {
-            var data = Enumerable.Range(0, stringToSplit.Length / chunkSize)
-                .Select(i => stringToSplit.Substring(i * chunkSize, chunkSize));
-
-            string result = "The generated token is:";
-
-            foreach (string str in data)
-            {
-                result += Environment.NewLine + str;
-            }
-
-            return result;
-        }
-    
         [Route("logout")]
+        [Authorize]
         public async Task<IActionResult> Logout()
         {
+           
+            
             await _accountRepository.SignOutAsync();
-            return RedirectToAction("Index", "Home");
+            HttpContext.Session.Clear();
+
+            return RedirectToAction("Login", "Account");
         }
 
         [Route("change-password")]
