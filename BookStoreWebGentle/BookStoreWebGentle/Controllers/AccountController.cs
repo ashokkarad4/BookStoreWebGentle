@@ -19,15 +19,11 @@ namespace BookStoreWebGentle.Controllers
     {
         private readonly IAccountRepository _accountRepository;
         private readonly IConfiguration _configuration;
-        private string generatedToken = null;
         private readonly UserManager<ApplicationUser> _userManager;
         private readonly SignInManager<ApplicationUser> _signInManager;
         private readonly ITokenService _tokenService;
         private readonly IUserRepository _userRepository;
         private readonly JwtTokenCreator _jwtCreator;
-
-
-
         public AccountController(UserManager<ApplicationUser> userManager,SignInManager<ApplicationUser> signInManager,JwtTokenCreator jwtCreator,IAccountRepository accountRepository, IConfiguration configuration,ITokenService tokenService, IUserRepository userRepository)
         {
             _accountRepository = accountRepository;
@@ -76,7 +72,7 @@ namespace BookStoreWebGentle.Controllers
         [Route("login")]
         [HttpPost]
         public async Task<IActionResult> Login(SignInModel signInModel)
-    {
+        {
             if (ModelState.IsValid)
             {
                 var signIn = await _signInManager.PasswordSignInAsync(signInModel.UserName, signInModel.Password, false, false);
@@ -96,13 +92,21 @@ namespace BookStoreWebGentle.Controllers
 
                     return RedirectToAction("Index","Home");
                 }
+                if (signIn.IsNotAllowed)
+                {
+                    ModelState.AddModelError("", "Not allowed to login");
+                }
+                else if (signIn.IsLockedOut)
+                {
+                    ModelState.AddModelError("", "Account blocked. Try after some time.");
+                }
                 else
                 {
-                    return BadRequest(new { signIn.IsLockedOut, signIn.IsNotAllowed, signIn.RequiresTwoFactor });
+                    ModelState.AddModelError("", "Invalid credentials");
                 }
             }
-            else
-                return BadRequest(ModelState);
+            return View(signInModel);
+
         }
         [HttpGet("refresh")]
         public async Task<IActionResult> Refresh()
@@ -126,11 +130,14 @@ namespace BookStoreWebGentle.Controllers
         [Authorize]
         public async Task<IActionResult> Logout()
         {
-           
-            
+            //Response.Cookies.Delete("X-Access-Token");
+            //Response.Cookies.Delete("X-Username");
+            //Response.Cookies.Delete("X-Refresh-Token");
             await _accountRepository.SignOutAsync();
-            HttpContext.Session.Clear();
-
+            foreach (var cookie in Request.Cookies.Keys)
+            {
+                Response.Cookies.Delete(cookie);
+            }
             return RedirectToAction("Login", "Account");
         }
 

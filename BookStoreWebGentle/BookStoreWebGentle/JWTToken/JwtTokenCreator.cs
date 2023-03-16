@@ -23,7 +23,6 @@ namespace BookStoreWebGentle.JWTToken
             var claims = new List<Claim>
             {
                 new Claim(JwtRegisteredClaimNames.Sub, userName),
-                //new Claim(JwtRegisteredClaimNames.Email, email),
                 new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString()),
                 new Claim(ClaimTypes.NameIdentifier, userId)
             };

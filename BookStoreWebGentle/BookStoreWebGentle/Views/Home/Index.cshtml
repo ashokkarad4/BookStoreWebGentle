@@ -1,34 +1,36 @@
 ﻿
 @{
     ViewData["Title"] = "Home";
- }
+}
 @inject BookStoreWebGentle.Repository.IBookRepository _bookRepository
-   <section class="container-fluid text-bg-success text-light p-5 text-center">
-       <div class="container">
-           <h1>Welcome to book Store</h1>
-           <p>
-               A online bookstore is a shop that sells books, and where people can buy them. A used bookstore or second-hand bookshop sells and often buys used books.
-               A book shop is a place where different kinds of textbooks or reference books are sold. It is a very important place for all especially for the students. Generally a book shop is situated near school, college or a stationary market place. There are kept many shelves on which the books are nicely arranged. The books are categorized according to the types. We can buy text book, story book, dictionary, pen, pencil, rubber etc. also from it. A bookseller is always available to serve the customers. A bookshop provides us with facilities to expand our knowledge.
-           </p>
-           <p>
-               @*<a asp-controller="Book" asp-action="Search" class="btn btn-primary my-2">Search Books</a>*@
-           </p>   
-       </div>
-   </section>
+    
 
-   <div class="py-5 bg-light">
-       <div class="container">
-           <h3 class="h3">Top books</h3>
-           @await Component.InvokeAsync("TopBooks", new { count = 6 })
+    <section class="container-fluid text-bg-success text-light p-5 text-center">
+        <div class="container">
+            <h1>Welcome to book Store</h1>
+            <p>
+                A online bookstore is a shop that sells books, and where people can buy them. A used bookstore or second-hand bookshop sells and often buys used books.
+                A book shop is a place where different kinds of textbooks or reference books are sold. It is a very important place for all especially for the students. Generally a book shop is situated near school, college or a stationary market place. There are kept many shelves on which the books are nicely arranged. The books are categorized according to the types. We can buy text book, story book, dictionary, pen, pencil, rubber etc. also from it. A bookseller is always available to serve the customers. A bookshop provides us with facilities to expand our knowledge.
+            </p>
+            <p>
+                @*<a asp-controller="Book" asp-action="Search" class="btn btn-primary my-2">Search Books</a>*@
+            </p>
+        </div>
+    </section>
 
-           @*<vc:top-books count="6" ></vc:top-books>*@
+    <div class="py-5 bg-light">
+        <div class="container">
+            <h3 class="h3">Top books</h3>
+            @await Component.InvokeAsync("TopBooks", new { count = 6 })
 
-       </div>
-   </div>
- @section scripts{ 
-     <script>
-         $(document).ready(function () {
-            // alert("document is Ready");
-         })
-     </script>
- }
+            @*<vc:top-books count="6" ></vc:top-books>*@
+
+        </div>
+    </div>
+    @section scripts{
+        <script>
+            $(document).ready(function () {
+                // alert("document is Ready");
+            })
+        </script>
+    }

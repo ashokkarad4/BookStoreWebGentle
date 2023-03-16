@@ -7,7 +7,6 @@ namespace BookStoreWebGentle.Enum
 {
     public enum Roles
     {
-
         SuperAdmin,
         Admin,
         Moderator,

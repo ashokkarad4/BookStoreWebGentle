@@ -6,6 +6,7 @@ using BookStoreWebGentle.Repository;
 using BookStoreWebGentle.Services;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
+using Microsoft.AspNetCore.CookiePolicy;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
@@ -76,6 +77,9 @@ namespace BookStoreWebGentle
                     options.Cookie.SameSite = SameSiteMode.Strict;
                     options.Cookie.SecurePolicy = CookieSecurePolicy.Always;
                     options.Cookie.IsEssential = true;
+                    options.ExpireTimeSpan = TimeSpan.FromMinutes(10);
+                    options.LoginPath = "/Home/Index";
+                    options.LogoutPath = "/Account/Login";
                 });
 
             services.AddIdentity<ApplicationUser, IdentityRole>()
@@ -116,12 +120,8 @@ namespace BookStoreWebGentle
             services.AddControllersWithViews();
 #if DEBUG
             services.AddRazorPages();
-            //  option =>
-            //{
-            //  option.HtmlHelperOptions.ClientValidationEnabled = false;
-            //
-            //  });
-#endif
+
+#endif  
             services.AddScoped<IBookRepository, BookRepository>();
             services.AddScoped<IAccountRepository, AccountRepository>();
             services.AddScoped<IUserService, UserService>();
@@ -145,26 +145,23 @@ namespace BookStoreWebGentle
 
                 app.UseStaticFiles();
                 app.UseSession();
-                app.Use(async (context, next) =>
-                {
-                    var token = context.Session.GetString("Token");
-                    if (!string.IsNullOrEmpty(token))
-                    {
-                        context.Request.Headers.Add("Authorization", "Bearer " + token);
-                    }
-                    await next();
-                });
+                //app.Use(async (context, next) =>
+                //{
+                //    var token = context.Session.GetString("Token");
+                //    if (!string.IsNullOrEmpty(token))
+                //    {
+                //        context.Request.Headers.Add("Authorization", "Bearer " + token);
+                //    }
+                //    await next();
+                //});
 
                 app.UseAuthentication();
                 app.UseRouting();
                 app.UseAuthorization();
+                app.UseCookiePolicy();
                 app.UseEndpoints(endpoints =>
                 {
                     endpoints.MapDefaultControllerRoute();
-                    //endpoints.MapControllerRoute(
-                    //    name: "Default",
-                    //    pattern: "bookApp/{controller=Home}/{action=Index}/{id?}");
-
                     endpoints.MapControllerRoute(
                             name: "MyArea",
                             pattern: "{area:exists}/{controller=Home}/{action=Index}/{id?}");
